@@ -59,11 +59,11 @@
     border-top: 3px solid #000;
   }
   
-  .row:nth-child(3n+1) .cell {
+  .col:nth-child(3n+1) .cell {
     border-left: 3px solid #000;
   }
   
-  .row:nth-child(9) .cell {
+  .col:nth-child(9) .cell {
     border-right: 3px solid #000;
   }
   

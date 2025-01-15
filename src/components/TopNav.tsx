@@ -8,7 +8,6 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
 
     const handleUndoClick = () => { 
         setIsChecked(false);
-        console.log(state.cellActionsList)
         if (state.killerMode) {
             // Handle this in a separate function to avoid excessively long functions
             return;
@@ -35,6 +34,10 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
         } 
         
         if (state.isValid) { 
+            if (undoItem.value === 0) {
+                stateSetters.setCellActionsRedoList(undoItem['row'], undoItem['col'], 0)
+                stateSetters.removeCellActionsList()
+            }
             stateSetters.removeCellActionsList()
             stateSetters.setCellActionsRedoList(currentItem['row'], currentItem['col'],currentItem['value'])
             gridSetters.setCellValue(undoItem['row'], undoItem['col'], undoItem['value'])
@@ -42,9 +45,6 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
             gridSetters.setCellIsSelected(itemTwoBack['row'], itemTwoBack['col'], true)
             gridSetters.setCellIsSelected(undoItem['row'], undoItem['col'], false)
             gridSetters.setCellIsIncorrect(undoItem['row'], undoItem['col'], false)
-            if (undoItem.value === 0) {
-                stateSetters.removeCellActionsList()
-            }
         } else {
             stateSetters.setIsValid(true);
             stateSetters.removeCellActionsList()
@@ -53,19 +53,24 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
         
     }
 
-    const handleRedoClick = () => { // FIX THIS
+    const handleRedoClick = () => {
         setIsChecked(false);
-        stateSetters.setIsValid(true)
 
-        if (state.cellActionsRedoList.length === 0) {
+        if (state.cellActionsRedoList.length === 0 || state.isValid === false) {
             return;
         }
 
         const redoItem = state.cellActionsRedoList[state.cellActionsRedoList.length - 1];
+        const recentItem = state.cellActionsRedoList[state.cellActionsRedoList.length - 2];
         // This is the redo function using the cellActionsList and cellActionsListIndex 
-        gridSetters.setCellValue(redoItem['row'], redoItem['col'], redoItem['value']);
+        if (recentItem['value'] === 0 || redoItem['value'] === 0) {
+            stateSetters.removeCellActionsRedoList();
+            stateSetters.setCellActionsList(recentItem['row'], recentItem['col'], 0);
+        }
+
         stateSetters.removeCellActionsRedoList();
         stateSetters.setCellActionsList(redoItem['row'], redoItem['col'], redoItem['value']);
+        gridSetters.setCellValue(redoItem['row'], redoItem['col'], redoItem['value']);
     }
 
     const handleResetClick = () => {

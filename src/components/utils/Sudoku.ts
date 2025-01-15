@@ -37,8 +37,6 @@ function checkSudoku(e, cell, grid, gridSetters) {
     }
 }
 
-
-
 // Helper function to validate the input
 function validateSudoku(e, cell, grid, state, stateSetters, gridSetters ) {
     // Check if the input is a number
@@ -47,6 +45,7 @@ function validateSudoku(e, cell, grid, state, stateSetters, gridSetters ) {
         gridSetters.setCellValue(undoItem['row'],undoItem['col'], 0);
         gridSetters.setCellIsIncorrect(undoItem['row'], undoItem['col'], false);
         stateSetters.setIsValid(true);
+        stateSetters.removeCellActionsList();
         return;
     }
     if (!/^\d$/.test(e)) {

@@ -8,6 +8,7 @@ export default function SudokuGrid({ grid, state, stateSetters, gridSetters }) {
     useEffect(() => {}, [grid]);
 
     const handleCellChange = (e: React.ChangeEvent<HTMLInputElement>, cell: Cell) => {
+        stateSetters.clearCellActionsRedoList();
         let inputValue = e.target.value.slice(-1);
         validateSudoku(inputValue, cell, grid, state, stateSetters, gridSetters)
     }
@@ -16,6 +17,7 @@ export default function SudokuGrid({ grid, state, stateSetters, gridSetters }) {
     const handleCellClick = (cell: Cell) => {
         if (state.selectedCell) {
             gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
+            stateSetters.setSelectedCell(cell);
         }
         if (cell.isSelected) {
             gridSetters.setCellIsSelected(cell.row, cell.col, false);
@@ -27,7 +29,7 @@ export default function SudokuGrid({ grid, state, stateSetters, gridSetters }) {
     return (
         <div className={`grid ${state.deletingBox ? 'highlight-grid' : ''}`}>
             {grid.map((row, rowIndex) => (
-                <div key={rowIndex} className="row">
+                <div key={rowIndex} className="col">
                     {row.map((cell: Cell) => (
                         <div
                             key={cell.id}
