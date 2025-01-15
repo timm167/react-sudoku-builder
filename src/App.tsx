@@ -36,7 +36,6 @@ function App() {
 
   useEffect(() => {
     // Add global key listener
-    console.log(grid)
     const keyListener = (e: KeyboardEvent) => {
       keyboardManager(e);
     };

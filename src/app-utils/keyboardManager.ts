@@ -28,45 +28,51 @@
 function navigateGrid(direction, grid, state, gridSetters, stateSetters) {
     switch (direction) {
         case "ArrowUp":
-            if (state.selectedCell.col === 0) {
-                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(8, state.selectedCell.row, true);
-                stateSetters.setSelectedCell(grid[8][state.selectedCell.row]);
-            } else {
-                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(state.selectedCell.col - 1, state.selectedCell.row, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.col - 1][state.selectedCell.row]);
-            }
-            break;
-        case "ArrowDown":
-            if (state.selectedCell.col === 8) {
-                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(0, state.selectedCell.row, true);
-                stateSetters.setSelectedCell(grid[0][state.selectedCell.row]);
-            } else {
-                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(state.selectedCell.col + 1, state.selectedCell.row, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.col + 1][state.selectedCell.row]);
-            }
-            break;
-        case "ArrowLeft":
             if (state.selectedCell.row === 0) {
                 gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(state.selectedCell.col, 8, true);
+                gridSetters.setCellIsSelected(state.selectedCell.col, 8, true); // Moving up wraps to last row
                 stateSetters.setSelectedCell(grid[state.selectedCell.col][8]);
             } else {
                 gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row - 1, true);
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row - 1, true); // Move up (decrease row)
                 stateSetters.setSelectedCell(grid[state.selectedCell.col][state.selectedCell.row - 1]);
             }
             break;
-        case "ArrowRight":
+        
+        case "ArrowDown":
             if (state.selectedCell.row === 8) {
                 gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
-                gridSetters.setCellIsSelected(state.selectedCell.col, 0, true);
+                gridSetters.setCellIsSelected(state.selectedCell.col, 0, true); // Moving down wraps to first row
                 stateSetters.setSelectedCell(grid[state.selectedCell.col][0]);
             } else {
-    }
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row + 1, true); // Move down (increase row)
+                stateSetters.setSelectedCell(grid[state.selectedCell.col][state.selectedCell.row + 1]);
+            }
+            break;
+        case "ArrowLeft":
+            if (state.selectedCell.col === 0) {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(8, state.selectedCell.row, true); // Moving left wraps to last column
+                stateSetters.setSelectedCell(grid[8][state.selectedCell.row]);
+            } else {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col - 1, state.selectedCell.row, true); // Move left (decrease column)
+                stateSetters.setSelectedCell(grid[state.selectedCell.col - 1][state.selectedCell.row]);
+            }
+            break;
+        
+        case "ArrowRight":
+            if (state.selectedCell.col === 8) {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(0, state.selectedCell.row, true); // Moving right wraps to first column
+                stateSetters.setSelectedCell(grid[0][state.selectedCell.row]);
+            } else {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col + 1, state.selectedCell.row, true); // Move right (increase column)
+                stateSetters.setSelectedCell(grid[state.selectedCell.col + 1][state.selectedCell.row]);
+            }
+            break;
 }};
 
 export const createKeyboardManager = (grid, state, stateSetters, gridSetters) => {
