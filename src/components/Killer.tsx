@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useAppContext } from '../appContext';
 import './css/Killer.css';
 
-export default function Killer({grid, state, stateSetters, gridSetters}) {
+export default function Killer({}) {
+
+    const { state, stateSetters, buttonInputRefs } = useAppContext();
 
     // Four functions below just handle the various buttons in the killer mode
     // Currently they just update state but they will need to do more later

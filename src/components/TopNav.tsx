@@ -1,76 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
+import { useAppContext } from "../appContext";
 import "./css/TopNav.css";
+import { handleKillerUndo, handleKillerRedo, handleSave, handleSudokuUndo, handleSudokuRedo } from "./utils/TopNav";
 
-export default function TopNav({ grid, state, stateSetters, gridSetters }) {
+export default function TopNav() {
     const [isChecked, setIsChecked] = useState(false);
-
-    useEffect(() => {}, [grid, state]);
+    const { state, stateSetters, grid, gridSetters } = useAppContext();
 
     const handleUndoClick = () => { 
         setIsChecked(false);
         if (state.killerMode) {
-            // Handle this in a separate function to avoid excessively long functions
+            handleKillerUndo()
             return;
         }
-         
         // If there are no actions to undo, do nothing
-        if (state.cellActionsList.length === 0) {
-            return;
-        }
+        if (state.cellActionsList.length === 0) {return}
 
         // If there's one action, it is empty so clear it to avoid unnecessary data being stored
         if (state.cellActionsList.length === 1) {
             stateSetters.removeCellActionsList()
             return
         } 
-
-        // Picks the cell to undo and the cell to select after the undo
-        const currentItem = state.cellActionsList[state.cellActionsList.length - 1];
-        const undoItem = state.cellActionsList[state.cellActionsList.length - 2];
-        let itemTwoBack = undoItem;
-
-        if (state.cellActionsList.length > 2) {
-            itemTwoBack = state.cellActionsList[state.cellActionsList.length - 3];
-        } 
         
-        if (state.isValid) { 
-            if (undoItem.value === 0) {
-                stateSetters.setCellActionsRedoList(undoItem['col'], undoItem['row'], 0)
-                stateSetters.removeCellActionsList()
-            }
-            stateSetters.removeCellActionsList()
-            stateSetters.setCellActionsRedoList(currentItem['col'], currentItem['row'],currentItem['value'])
-            gridSetters.setCellValue(undoItem['col'], undoItem['row'], undoItem['value'])
-            gridSetters.setCellIsSelected(state.selectedCell['col'], state.selectedCell['row'], false)
-            gridSetters.setCellIsSelected(itemTwoBack['col'], itemTwoBack['row'], true)
-            gridSetters.setCellIsSelected(undoItem['col'], undoItem['row'], false)
-            gridSetters.setCellIsIncorrect(undoItem['col'], undoItem['row'], false)
-        } else {
-            stateSetters.setIsValid(true);
-            stateSetters.removeCellActionsList()
-            gridSetters.setCellIsIncorrect(currentItem['col'], currentItem['row'], false)
-        }
-        
+        // Undo the last action
+        handleSudokuUndo(state, stateSetters, gridSetters)
     }
 
     const handleRedoClick = () => {
         setIsChecked(false);
 
+        if (state.killerMode) {
+            handleKillerRedo()
+            return;
+        }
         if (state.cellActionsRedoList.length === 0 || state.isValid === false) {
             return;
         }
-
-        const redoItem = state.cellActionsRedoList[state.cellActionsRedoList.length - 1];
-        const recentItem = state.cellActionsRedoList[state.cellActionsRedoList.length - 2];
-        // This is the redo function using the cellActionsList and cellActionsListIndex 
-        if (recentItem['value'] === 0 || redoItem['value'] === 0) {
-            stateSetters.removeCellActionsRedoList();
-            stateSetters.setCellActionsList(recentItem['col'], recentItem['row'], 0);
-        }
-
-        stateSetters.removeCellActionsRedoList();
-        stateSetters.setCellActionsList(redoItem['col'], redoItem['row'], redoItem['value']);
-        gridSetters.setCellValue(redoItem['col'], redoItem['row'], redoItem['value']);
+        // Redo the last action
+        handleSudokuRedo(state, stateSetters, gridSetters)
     }
 
     const handleResetClick = () => {
@@ -79,14 +46,11 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
     }
 
     const handleSaveClick = () => {
-        console.log("Save"); 
-        // fill in later
+        handleSave(grid)
     }
 
     const handleKillerClick = () => {
         stateSetters.setKillerMode(!state.killerMode);
-        // This is all this button needs to do I think
-        // Other logic will rely on the killer mode state
     }
 
     return (

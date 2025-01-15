@@ -1,7 +1,8 @@
 import React from "react";
+import { useAppContext } from "../appContext";
 import "./css/Solve.css";
 
-export default function Solve({ grid, state, stateSetters, gridSetters }) {
+export default function Solve() {
 
     const handleImportClick = () => {
         console.log("Import");
