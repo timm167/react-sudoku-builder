@@ -1,70 +1,70 @@
 // // Just navigates the grid based on the direction
 // function navigateGrid(direction) {
 //     let cell = state.selectedCell;
-//     let row = cell.row;
 //     let col = cell.col;
-//     let newRow = row;
-//     let newCol = col;
+//     let row = cell.row;
+//     let newcol = col;
+//     let newrow = row;
 
 //     switch (direction) {
 //         case "up":
-//             newRow = row === 0 ? 8 : row - 1;
+//             newcol = col === 0 ? 8 : col - 1;
 //             break;
 //         case "down":
-//             newRow = row === 8 ? 0 : row + 1;
+//             newcol = col === 8 ? 0 : col + 1;
 //             break;
 //         case "left":
-//             newCol = col === 0 ? 8 : col - 1;
+//             newrow = row === 0 ? 8 : row - 1;
 //             break;
 //         case "right":
-//             newCol = col === 8 ? 0 : col + 1;
+//             newrow = row === 8 ? 0 : row + 1;
 //             break;
 //     }
 
-//     setSelectedCell(state.grid[newRow][newCol]);
+//     setSelectedCell(state.grid[newcol][newrow]);
 //     state.selectedCell.focus();
 // }
 
 function navigateGrid(direction, grid, state, gridSetters, stateSetters) {
     switch (direction) {
         case "ArrowUp":
-            if (state.selectedCell.row === 0) {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(8, state.selectedCell.col, true);
-                stateSetters.setSelectedCell(grid[8][state.selectedCell.col]);
+            if (state.selectedCell.col === 0) {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(8, state.selectedCell.row, true);
+                stateSetters.setSelectedCell(grid[8][state.selectedCell.row]);
             } else {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(state.selectedCell.row - 1, state.selectedCell.col, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.row - 1][state.selectedCell.col]);
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col - 1, state.selectedCell.row, true);
+                stateSetters.setSelectedCell(grid[state.selectedCell.col - 1][state.selectedCell.row]);
             }
             break;
         case "ArrowDown":
-            if (state.selectedCell.row === 8) {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(0, state.selectedCell.col, true);
-                stateSetters.setSelectedCell(grid[0][state.selectedCell.col]);
+            if (state.selectedCell.col === 8) {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(0, state.selectedCell.row, true);
+                stateSetters.setSelectedCell(grid[0][state.selectedCell.row]);
             } else {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(state.selectedCell.row + 1, state.selectedCell.col, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.row + 1][state.selectedCell.col]);
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col + 1, state.selectedCell.row, true);
+                stateSetters.setSelectedCell(grid[state.selectedCell.col + 1][state.selectedCell.row]);
             }
             break;
         case "ArrowLeft":
-            if (state.selectedCell.col === 0) {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(state.selectedCell.row, 8, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.row][8]);
+            if (state.selectedCell.row === 0) {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col, 8, true);
+                stateSetters.setSelectedCell(grid[state.selectedCell.col][8]);
             } else {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col - 1, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.row][state.selectedCell.col - 1]);
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row - 1, true);
+                stateSetters.setSelectedCell(grid[state.selectedCell.col][state.selectedCell.row - 1]);
             }
             break;
         case "ArrowRight":
-            if (state.selectedCell.col === 8) {
-                gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
-                gridSetters.setCellIsSelected(state.selectedCell.row, 0, true);
-                stateSetters.setSelectedCell(grid[state.selectedCell.row][0]);
+            if (state.selectedCell.row === 8) {
+                gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
+                gridSetters.setCellIsSelected(state.selectedCell.col, 0, true);
+                stateSetters.setSelectedCell(grid[state.selectedCell.col][0]);
             } else {
     }
 }};
@@ -73,7 +73,7 @@ export const createKeyboardManager = (grid, state, stateSetters, gridSetters) =>
     return (e) => {
         // Check if there's a selected cell
         if (state.selectedCell) {
-            // Handle the arrow key navigation (use the correct key names)
+            // Handle the Arrow key navigation (use the correct key names)
             if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
                 navigateGrid(e.key, grid, state, gridSetters, stateSetters);
             }

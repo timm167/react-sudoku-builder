@@ -18,8 +18,8 @@ export default function Killer({grid, state, stateSetters, gridSetters}) {
         stateSetters.setCreatingBox(!state.creatingBox);
     }
 
-    const handleToggleColorClick = () => {
-        stateSetters.setCurrentColorsArray()
+    const handleTogglecolorClick = () => {
+        stateSetters.setCurrentcolorsArray()
     }
 
     return (
@@ -41,10 +41,10 @@ export default function Killer({grid, state, stateSetters, gridSetters}) {
                     {`${state.creatingBox ? 'Place Box' : 'New Box'}`} <span>(Enter)</span>
                 </button>
                 <button 
-                    className={`killer-button toggle-color-button ${state.currentColorsArray[state.currentColorsArray.length - 1]}`} 
-                    onClick={handleToggleColorClick}
+                    className={`killer-button toggle-color-button ${state.currentcolorsArray[state.currentcolorsArray.length - 1]}`} 
+                    onClick={handleTogglecolorClick}
                 >
-                    Toggle Color
+                    Toggle color
                 </button>
             </div>
         </div>

@@ -35,20 +35,20 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
         
         if (state.isValid) { 
             if (undoItem.value === 0) {
-                stateSetters.setCellActionsRedoList(undoItem['row'], undoItem['col'], 0)
+                stateSetters.setCellActionsRedoList(undoItem['col'], undoItem['row'], 0)
                 stateSetters.removeCellActionsList()
             }
             stateSetters.removeCellActionsList()
-            stateSetters.setCellActionsRedoList(currentItem['row'], currentItem['col'],currentItem['value'])
-            gridSetters.setCellValue(undoItem['row'], undoItem['col'], undoItem['value'])
-            gridSetters.setCellIsSelected(state.selectedCell['row'], state.selectedCell['col'], false)
-            gridSetters.setCellIsSelected(itemTwoBack['row'], itemTwoBack['col'], true)
-            gridSetters.setCellIsSelected(undoItem['row'], undoItem['col'], false)
-            gridSetters.setCellIsIncorrect(undoItem['row'], undoItem['col'], false)
+            stateSetters.setCellActionsRedoList(currentItem['col'], currentItem['row'],currentItem['value'])
+            gridSetters.setCellValue(undoItem['col'], undoItem['row'], undoItem['value'])
+            gridSetters.setCellIsSelected(state.selectedCell['col'], state.selectedCell['row'], false)
+            gridSetters.setCellIsSelected(itemTwoBack['col'], itemTwoBack['row'], true)
+            gridSetters.setCellIsSelected(undoItem['col'], undoItem['row'], false)
+            gridSetters.setCellIsIncorrect(undoItem['col'], undoItem['row'], false)
         } else {
             stateSetters.setIsValid(true);
             stateSetters.removeCellActionsList()
-            gridSetters.setCellIsIncorrect(currentItem['row'], currentItem['col'], false)
+            gridSetters.setCellIsIncorrect(currentItem['col'], currentItem['row'], false)
         }
         
     }
@@ -65,12 +65,12 @@ export default function TopNav({ grid, state, stateSetters, gridSetters }) {
         // This is the redo function using the cellActionsList and cellActionsListIndex 
         if (recentItem['value'] === 0 || redoItem['value'] === 0) {
             stateSetters.removeCellActionsRedoList();
-            stateSetters.setCellActionsList(recentItem['row'], recentItem['col'], 0);
+            stateSetters.setCellActionsList(recentItem['col'], recentItem['row'], 0);
         }
 
         stateSetters.removeCellActionsRedoList();
-        stateSetters.setCellActionsList(redoItem['row'], redoItem['col'], redoItem['value']);
-        gridSetters.setCellValue(redoItem['row'], redoItem['col'], redoItem['value']);
+        stateSetters.setCellActionsList(redoItem['col'], redoItem['row'], redoItem['value']);
+        gridSetters.setCellValue(redoItem['col'], redoItem['row'], redoItem['value']);
     }
 
     const handleResetClick = () => {

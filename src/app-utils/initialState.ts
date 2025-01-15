@@ -1,4 +1,4 @@
-import transparentColors from "./colors"
+import transparentcolors from "./colors"
 
 const initialState = {
     isValid: true,
@@ -9,7 +9,7 @@ const initialState = {
     killerMode: false,
     cellActionsList: [],
     cellActionsRedoList: [],
-    currentColorsArray: transparentColors,
+    currentcolorsArray: transparentcolors,
 }
 
 export default initialState

@@ -99,7 +99,7 @@ span {
 @media (max-width: 750px) {
     .top-nav-buttons {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-rowumns: 1fr 1fr;
     }
     .undo-button {
         justify-self: right;

@@ -1,14 +1,14 @@
 // Helper function to get the cube index
-function getCubeIndex(row: number, col: number): number {
-    return Math.floor(row / 3) * 3 + Math.floor(col / 3);
+function getCubeIndex(col: number, row: number): number {
+    return Math.floor(col / 3) * 3 + Math.floor(row / 3);
   }
 
 // Define the Cell interface
 // Not confident in the types but this seems okay. May need to adjust for box logic.
 export interface Cell {
     id: string;
-    row: any;
     col: any;
+    row: any;
     cube: number;
     canFocus: boolean;
     value: number;
@@ -17,18 +17,18 @@ export interface Cell {
     box: string | undefined;
     boxSum: number;
     boxDeclaredSum: number;
-    boxColor: string;
+    boxcolor: string;
     isFixed: boolean;
   }
   
 // Helper function to initialize a cell
 // This won't be used after creation. Data will be updated as part of state.
-function initializeCell(row: number, col: number): Cell {
+function initializeCell(col: number, row: number): Cell {
     return {
-        id: `${row}-${col}`, // Unique identifier
-        row: row, // Row index
-        col: col, // Column index
-        cube: getCubeIndex(row, col), // Cube index
+        id: `${col}-${row}`, // Unique identifier
+        col: col, // col index
+        row: row, // rowumn index
+        cube: getCubeIndex(col, row), // Cube index
         canFocus: true, // For graphics purposes
         value: 0, // Value of the cell (will have to make 0 invisible)
         isSelected: false, // Helps keyboard navigation, input, and graphics
@@ -36,14 +36,14 @@ function initializeCell(row: number, col: number): Cell {
         box: undefined, // Will be useful for box constraints built later
         boxSum: 0, // Will be useful for box constraints built later
         boxDeclaredSum: 0, // Will be useful for box constraints built later
-        boxColor: '', // Will be useful for box constraints built later
+        boxcolor: '', // Will be useful for box constraints built later
         isFixed: false // Fixes the value for backend or play. Only updates on save or send. NOT NEEDED UNTIL BACKEND BUILDING
     };
 }
 
 
 // Initialize the grid with cells
-function initializeGrid(): Cell[][] { // Cell[][] is a 2D array of cells that can be accessed by grid[row][column] (the same as in my prototype)
+function initializeGrid(): Cell[][] { // Cell[][] is a 2D array of cells that can be accessed by grid[col][rowumn] (the same as in my prototype)
     const grid: Cell[][] = []; 
     for (let i = 0; i < 9; i++) {
       const row: Cell[] = [];

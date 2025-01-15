@@ -16,21 +16,21 @@ export default function SudokuGrid({ grid, state, stateSetters, gridSetters }) {
     // For now this just works with css to highlight the selected cell
     const handleCellClick = (cell: Cell) => {
         if (state.selectedCell) {
-            gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
+            gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
             stateSetters.setSelectedCell(cell);
         }
         if (cell.isSelected) {
-            gridSetters.setCellIsSelected(cell.row, cell.col, false);
+            gridSetters.setCellIsSelected(cell.col, cell.row, false);
         } else {
-            gridSetters.setCellIsSelected(cell.row, cell.col, true);
+            gridSetters.setCellIsSelected(cell.col, cell.row, true);
         }
     }
 
     return (
         <div className={`grid ${state.deletingBox ? 'highlight-grid' : ''}`}>
-            {grid.map((row, rowIndex) => (
-                <div key={rowIndex} className="col">
-                    {row.map((cell: Cell) => (
+            {grid.map((col, colIndex) => (
+                <div key={colIndex} className="col">
+                    {col.map((cell: Cell) => (
                         <div
                             key={cell.id}
                             className={`cell ${cell.isSelected ? 'selected' : ''} ${cell.isIncorrect ? 'incorrect' : ''}`}

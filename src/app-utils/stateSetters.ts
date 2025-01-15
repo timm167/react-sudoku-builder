@@ -19,10 +19,10 @@ export const createStateSetters = (setState) => ({
   setSelectedCell: (value: any) =>
     setState((prevState) => ({ ...prevState, selectedCell: value })),
 
-  setCellActionsList: (row: number, col: number, value: any) => 
+  setCellActionsList: (col: number, row: number, value: any) => 
     setState((prevState) => ({
       ...prevState,
-      cellActionsList: [...prevState.cellActionsList, { row, col, value }]
+      cellActionsList: [...prevState.cellActionsList, { col, row, value }]
     })),
 
   removeCellActionsList: () =>
@@ -34,10 +34,10 @@ export const createStateSetters = (setState) => ({
       };
     }),
 
-  setCellActionsRedoList: (row: number, col: number, value: any) => 
+  setCellActionsRedoList: (col: number, row: number, value: any) => 
     setState((prevState) => ({
       ...prevState,
-      cellActionsRedoList: [...prevState.cellActionsRedoList, { row, col, value }]
+      cellActionsRedoList: [...prevState.cellActionsRedoList, { col, row, value }]
     })),
 
   removeCellActionsRedoList: () => 
@@ -51,11 +51,11 @@ export const createStateSetters = (setState) => ({
     setState((prevState) => ({ ...prevState, cellActionsRedoList: [] }));
   },
 
-  // If the array is empty, it will push the initial colors array to the currentColorsArray
-  setCurrentColorsArray: () => 
+  // If the array is empty, it will push the initial colors array to the currentcolorsArray
+  setCurrentcolorsArray: () => 
     setState((prevState) => {
-      const newArray = [...prevState.currentColorsArray];
-      newArray.length === 0 ? newArray.push(...initialState.currentColorsArray): newArray.pop();
-      return { ...prevState, currentColorsArray: newArray };
+      const newArray = [...prevState.currentcolorsArray];
+      newArray.length === 0 ? newArray.push(...initialState.currentcolorsArray): newArray.pop();
+      return { ...prevState, currentcolorsArray: newArray };
     }),
 });

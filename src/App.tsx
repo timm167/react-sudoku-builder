@@ -36,6 +36,7 @@ function App() {
 
   useEffect(() => {
     // Add global key listener
+    console.log(grid)
     const keyListener = (e: KeyboardEvent) => {
       keyboardManager(e);
     };
@@ -72,7 +73,7 @@ function App() {
         />
       </div>
       <div className='container'>
-        {/* Killer component renders 4 buttons: Delete Box, Set Box Total, Create Box, and Toggle Color */}
+        {/* Killer component renders 4 buttons: Delete Box, Set Box Total, Create Box, and Toggle color */}
         <Killer 
           grid={grid} 
           state={state}
