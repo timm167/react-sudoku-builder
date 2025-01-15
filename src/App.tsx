@@ -1,5 +1,5 @@
 // Utility functions or constants
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { initializeGrid } from "./components/utils/Grid";
 import initialState from './app-utils/initialState'
 
@@ -14,9 +14,13 @@ import './App.css'
 
 // NEXT STEPS:
 // Make the grid interactive using my new grid setters
+// Redo button
+// bugless grid before moving on to killer mode
+
+let initialGrid = initializeGrid();
 
 function App() {
-  const [grid, setGrid] = useState(initializeGrid()); // Sets the grid initially ready for logic to handle its data
+  const [grid, setGrid] = useState(initialGrid); // Sets the grid initially ready for logic to handle its data
   const [state, setState] = useState(initialState) // Sets the state of the app to the initial state 
 
   // Grid update functions using the spread operator to update grid
@@ -30,10 +34,11 @@ function App() {
         return newGrid;
       }),
 
-    setCellSelected: (row: number, col: number) =>
+    setCellIsSelected: (row: number, col: number, value: boolean) =>
       setGrid((prevState) => {
         const newGrid = [...prevState];
-        newGrid[row][col].isSelected = !newGrid[row][col].isSelected;
+        newGrid[row][col].isSelected = value;
+        stateSetters.setSelectedCell(newGrid[row][col]);
         return newGrid;
       }),
 
@@ -91,24 +96,56 @@ function App() {
         stateSetters.setCurrentColorsArray();
         return newGrid;
       })
-
   }
 
   // State update functions using spread operator to update state
   const stateSetters = {
     setIsValid: (value: boolean) =>
       setState((prevState) => ({ ...prevState, isValid: value })),
+
     setDeletingBox: (value: boolean) =>
       setState((prevState) => ({ ...prevState, deletingBox: value })),
+
     setSettingBoxTotal: (value: boolean) =>
       setState((prevState) => ({ ...prevState, settingBoxTotal: value })),
+
     setCreatingBox: (value: boolean) =>
       setState((prevState) => ({ ...prevState, creatingBox: value })),
+
     setKillerMode: (value: boolean) =>
       setState((prevState) => ({ ...prevState, killerMode: value })),
+
     setSelectedCell: (value: any) =>
       setState((prevState) => ({ ...prevState, selectedCell: value })),
-    // Removes the last color from the currentColorsArray as the current color will always be indexed at last the top of the stack
+
+    setCellActionsList: (row: number, col: number, value: any) => 
+      setState((prevState) => ({
+        ...prevState,
+        cellActionsList: [...prevState.cellActionsList, { row, col, value }]
+      })),
+
+    removeCellActionsList: () =>
+      setState((prevState) => { 
+        const updatedList = prevState.cellActionsList.slice(0, -1);
+        return {
+          ...prevState,
+          cellActionsList: updatedList,
+        };
+      }),
+
+    setCellActionsRedoList: (row: number, col: number, value: any) => 
+      setState((prevState) => ({
+        ...prevState,
+        cellActionsRedoList: [...prevState.cellActionsRedoList, { row, col, value }]
+      })),
+
+    removeCellActionsRedoList: () => 
+      setState((prevState) => {
+        const newArray = [...prevState.cellActionsRedoList];
+        newArray.pop();
+        return { ...prevState, cellActionsRedoList: newArray };
+      }),
+
     // If the array is empty, it will push the initial colors array to the currentColorsArray
     setCurrentColorsArray: () => 
       setState((prevState) => {
@@ -120,8 +157,8 @@ function App() {
 
   return (
     <>
-      <div className='container'>
-        <h1>Killer Sudoku</h1>
+      <div >
+        <h1>Killer Sudoku Builder</h1>
       </div>
       <div>
         {/* TopNav component renders 4 buttons: Undo, Reset, Save, Toggle Killer Mode */}

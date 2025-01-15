@@ -46,6 +46,10 @@
     background: transparent;
   }
 
+  .cell input:hover {
+    cursor: pointer;
+  }
+
 /* Add thicker borders to delineate the 3x3 cubes */
 .cell:nth-child(3n) {
     border-bottom: 3px solid #000;

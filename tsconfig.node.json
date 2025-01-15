@@ -2,9 +2,11 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2022",
-    "lib": ["ES2023"],
+    "lib": ["dom", "ES2023"],
     "module": "ESNext",
+    "jsx": "react",
     "skipLibCheck": true,
+    "incremental": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -14,11 +16,11 @@
     "noEmit": true,
 
     /* Linting */
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "noImplicitAny": false,
   },
-  "include": ["vite.config.ts"]
 }

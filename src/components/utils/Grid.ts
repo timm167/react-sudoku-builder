@@ -1,14 +1,14 @@
 // Helper function to get the cube index
-function getCubeIndex(row: number, column: number): number {
-    return Math.floor(row / 3) * 3 + Math.floor(column / 3);
+function getCubeIndex(row: number, col: number): number {
+    return Math.floor(row / 3) * 3 + Math.floor(col / 3);
   }
 
 // Define the Cell interface
 // Not confident in the types but this seems okay. May need to adjust for box logic.
-interface Cell {
+export interface Cell {
     id: string;
     row: any;
-    column: any;
+    col: any;
     cube: number;
     canFocus: boolean;
     value: number;
@@ -23,12 +23,12 @@ interface Cell {
   
 // Helper function to initialize a cell
 // This won't be used after creation. Data will be updated as part of state.
-function initializeCell(row: number, column: number): Cell {
+function initializeCell(row: number, col: number): Cell {
     return {
-        id: `${row}-${column}`, // Unique identifier
+        id: `${row}-${col}`, // Unique identifier
         row: row, // Row index
-        column: column, // Column index
-        cube: getCubeIndex(row, column), // Cube index
+        col: col, // Column index
+        cube: getCubeIndex(row, col), // Cube index
         canFocus: true, // For graphics purposes
         value: 0, // Value of the cell (will have to make 0 invisible)
         isSelected: false, // Helps keyboard navigation, input, and graphics

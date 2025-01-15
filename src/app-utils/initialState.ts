@@ -7,8 +7,11 @@ const initialState = {
     creatingBox: false,
     selectedCell: null,
     killerMode: false,
+    cellActionsList: [],
+    cellActionsRedoList: [],
     currentColorsArray: transparentColors,
 }
 
 export default initialState
 
+ 

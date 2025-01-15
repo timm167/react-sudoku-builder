@@ -1,36 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './css/Grid.css';
-  
-export default function SudokuGrid({grid, state, stateSetters, gridSetters}) {
+import { Cell } from "./utils/Grid";
+import { validateSudoku } from "./utils/Sudoku";
 
-    const handleCellChange = (e, cell) => {
-        cell.value = e.target.value;
-        // fill in later
+export default function SudokuGrid({ grid, state, stateSetters, gridSetters }) {
+
+    useEffect(() => {}, [grid]);
+
+    const handleCellChange = (e: React.ChangeEvent<HTMLInputElement>, cell: Cell) => {
+        let inputValue = e.target.value.slice(-1);
+        validateSudoku(inputValue, cell, grid, state, stateSetters, gridSetters)
     }
-    
-    const handleCellClick = (cell) => {
-        // fill in later
+
+    // For now this just works with css to highlight the selected cell
+    const handleCellClick = (cell: Cell) => {
+        if (state.selectedCell) {
+            gridSetters.setCellIsSelected(state.selectedCell.row, state.selectedCell.col, false);
+        }
+        if (cell.isSelected) {
+            gridSetters.setCellIsSelected(cell.row, cell.col, false);
+        } else {
+            gridSetters.setCellIsSelected(cell.row, cell.col, true);
+        }
     }
+
     return (
-        // maps through the grid, then each row, to define a div for each cell (I need this for adding extra non-input elements later)
         <div className={`grid ${state.deletingBox ? 'highlight-grid' : ''}`}>
             {grid.map((row, rowIndex) => (
                 <div key={rowIndex} className="row">
-                    {row.map((cell, cellIndex) => (
+                    {row.map((cell: Cell) => (
                         <div
                             key={cell.id}
                             className={`cell ${cell.isSelected ? 'selected' : ''} ${cell.isIncorrect ? 'incorrect' : ''}`}
                             onClick={() => handleCellClick(cell)}
-                            onChange={(e) => handleCellChange(e, cell)}
                         >
                             <input 
                                 type="text"
-                                value={cell.value}
+                                value={`${cell.value === 0 ? '' : cell.value}`}
+                                onChange={(e) => handleCellChange(e, cell)}
                             />
                         </div>
                     ))}
                 </div>
             ))}
         </div>
-    )
+    );
 }

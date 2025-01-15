@@ -56,12 +56,24 @@ span {
     background-color: #f28c87;
 }
 
+.redo-button {
+    background-color: #d2e9ab;
+    color: #333333;
+}
+
+.redo-button:hover {
+    background-color: #b1cf75;
+}
+
+/* Killer button */
 .toggle-killer-button {
     background-color: rgb(212, 149, 149);
     color: rgb(70, 21, 21);
     border: 1px solid rgb(70, 21, 21);
     box-shadow: 0 0 10px rgba(27, 75, 40, 0.657);
-    transform: scale(1.01)
+    transform: scale(1.01);
+    margin-top: 0px;
+    width: 336px;
 }
 
 .toggle-killer-button:hover {
@@ -78,6 +90,12 @@ span {
     background-color: rgb(174, 176, 141);
 }
 
+.killer-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
+}
+
 @media (max-width: 750px) {
     .top-nav-buttons {
         display: grid;
@@ -86,7 +104,7 @@ span {
     .undo-button {
         justify-self: right;
     }
-    .save-button {
+    .reset-button {
         justify-self: right;
     }
 }
