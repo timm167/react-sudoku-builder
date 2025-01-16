@@ -12,6 +12,7 @@
 }
 
 /* General button styles */
+
 .killer-button {
     width: 160px;
     height: 45px;
@@ -67,6 +68,71 @@
     transform: scale(1.01);
 }
 
+/* Form */
+
+.submit-button {
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin: 10px;
+    background-color: #64edeb;
+    align-self: center;
+    color: #3e3e3e;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    border: 2px solid #647b83;
+}
+
+.submit-button:hover {
+    background-color: #6fdedc;
+    cursor: pointer;
+    border: 2px solid #647b83;
+    box-shadow: 0 0 10px rgba(27, 75, 40, 0.657);
+}
+
+.submit-holder {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.form-input{
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 50px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    align-self: center;
+    text-align: center;
+    caret-color: transparent;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.form-input:hover {
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02); /* Slightly increase size for hover */
+    cursor: pointer;
+}
+
+.form-input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    transform: scale(1.03); /* Add a subtle scale effect for focus */
+}
+
+.form-input::-webkit-inner-spin-button,
+.form-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 /* Media */
 @media (max-width: 790px) {
     .inner-killer-buttons {
@@ -91,8 +157,18 @@
     .killer-buttons {
         width: 440px;
         height: 140px;
-        
     }
+
+}
+
+.highlight-button {
+    border: 2px solid #a5050574;
+    box-shadow: #793232 0px 0px 20px;
+}
+
+.highlight-button:hover {
+    border: 2px solid #a5050598;
+    box-shadow: #793232 0px 0px 20px;
 }
 
 

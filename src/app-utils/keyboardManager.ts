@@ -35,17 +35,21 @@ function navigateGrid(direction, grid, state, stateSetters, gridSetters, inputRe
 // Main function to create the keyboard manager
 export const createKeyboardManager = (grid, state, stateSetters, gridSetters, inputRefs, buttonInputRefs) => {
     return (e) => {
+        e.preventDefault();
         // Only trigger navigation if there's a selected cell and a relevant arrow key is pressed
         if (state.selectedCell && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
             navigateGrid(e.key, grid, state, stateSetters, gridSetters, inputRefs);
-        } else if (e.key === "Backspace" && (e.ctrlKey || e.shiftKey)) {
+        } else if (e.key === "X" && (e.ctrlKey || e.metaKey)) {
             buttonInputRefs.redoButton.current.click();
-        } else if (e.key === "Backspace") {
+        } else if (e.key === "Z" && (e.ctrlKey || e.metaKey)) {
             buttonInputRefs.undoButton.current.click();
+        } else if (e.key === "Shift") {
+            buttonInputRefs.killerButton.current.click();
+        } else if (state.killerMode && e.key === "C" && (e.ctrlKey || e.metaKey)) {
+            buttonInputRefs.newBoxButton.current.click();
+        } else if (e.key === "Tab") {
+            e.preventDefault();
+            buttonInputRefs.toggleColorButton.current.click();
         }
-        //cmd s to save
-        // add everything else tomorrow and tonight just go and eat a bagel
-
-
     };
 };

@@ -1,8 +1,9 @@
-import React, { useEffect,  } from "react";
+import React, { useEffect } from "react";
 import './css/Grid.css';
 import { Cell } from "./utils/Grid";
 import { validateSudoku } from "./utils/Sudoku";
 import { useAppContext } from "../appContext";
+import {addCellToBox }from "./utils/createBox";
 
 export default function SudokuGrid() {
     // Access context
@@ -17,6 +18,17 @@ export default function SudokuGrid() {
     }
 
     const handleCellClick = (cell: Cell) => {
+        if (state.creatingBox) {
+            addCellToBox(cell, state, stateSetters, gridSetters);
+            return;
+        }
+
+        if (state.settingBoxTotal && cell.box !== 'noBox'){
+            stateSetters.setIsRequestingSum(true);
+            stateSetters.setBoxBeingDeclared(cell.box);
+            return;
+        }
+
         gridInputRefs.current[cell.col][cell.row].current.focus();
         if (state.selectedCell) {
             gridSetters.setCellIsSelected(state.selectedCell.col, state.selectedCell.row, false);
@@ -30,13 +42,17 @@ export default function SudokuGrid() {
     }
 
     return (
-        <div className={`grid ${state.deletingBox ? 'highlight-grid' : ''}`}>
+        <div className={`grid ${state.deletingBox || state.creatingBox ? 'highlight-grid' : ''}`}>
             {grid.map((col, colIndex) => (
                 <div key={colIndex} className="col">
                     {col.map((cell: Cell, rowIndex) => (
                         <div
                             key={cell.id}
-                            className={`cell ${cell.isSelected ? 'selected' : ''} ${cell.isIncorrect ? 'incorrect' : ''}`}
+                            className={`cell ${cell.isSelected ? 'selected' : ''} 
+                                ${cell.isIncorrect ? 'incorrect' : ''}
+                                ${cell.isBeingAddedToBox ? 'box-add-highlight' : ''}
+                                ${cell.box === 'noBox' ? '' : 'box-highlight'}
+                                ${cell.boxColor}`}
                             onClick={() => handleCellClick(cell)}
                         >
                             <input 

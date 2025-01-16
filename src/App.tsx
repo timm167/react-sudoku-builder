@@ -19,11 +19,11 @@ function App() {
   // Access the context
   const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
 
-
-
   useEffect(() => {
     const keyListener = (e: KeyboardEvent) => {
-      keyboardManager(e);
+      if (!/^\d$/.test(e.key) && !['Backspace'].includes(e.key)) {
+        keyboardManager(e);
+    }
     };
     window.addEventListener("keydown", keyListener);
 

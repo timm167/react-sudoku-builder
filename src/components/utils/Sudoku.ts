@@ -5,9 +5,9 @@ function checkSudoku(e, cell, grid, gridSetters) {
     let c = cell.row;
     let cubeIndex = cell.cube;
     let value = parseInt(e);
-    let grid_row = []
-    let grid_col = []
-    let grid_cube = []
+    let grid_row = [];
+    let grid_col = [];
+    let grid_cube = [];
 
     // Get the values of the col, rowumn, and cube to check for duplicates
     for (let i = 0; i < 9; i++) {

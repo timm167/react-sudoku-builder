@@ -13,11 +13,12 @@ export interface Cell {
     canFocus: boolean;
     value: number;
     isSelected: boolean;
+    isBeingAddedToBox: boolean;
     isIncorrect: boolean;
-    box: string | undefined;
+    box: string;
     boxSum: number;
     boxDeclaredSum: number;
-    boxcolor: string;
+    boxColor: string;
     isFixed: boolean;
   }
   
@@ -32,11 +33,12 @@ function initializeCell(col: number, row: number): Cell {
         canFocus: true, // For graphics purposes
         value: 0, // Value of the cell (will have to make 0 invisible)
         isSelected: false, // Helps keyboard navigation, input, and graphics
+        isBeingAddedToBox: false, // Will be useful for graphics
         isIncorrect: false, // Sets value to wrong when a constraint is violated
-        box: undefined, // Will be useful for box constraints built later
+        box: 'noBox', // Will be useful for box constraints built later
         boxSum: 0, // Will be useful for box constraints built later
         boxDeclaredSum: 0, // Will be useful for box constraints built later
-        boxcolor: '', // Will be useful for box constraints built later
+        boxColor: '', // Will be useful for box constraints built later
         isFixed: false // Fixes the value for backend or play. Only updates on save or send. NOT NEEDED UNTIL BACKEND BUILDING
     };
 }

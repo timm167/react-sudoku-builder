@@ -61,7 +61,7 @@ export default function TopNav() {
                 className={`top-nav-button toggle-killer-button ${state.killerMode ? 'exit-killer-mode' : ''}`} 
                 onClick={() => handleKillerClick()}
             >
-                {state.killerMode ? 'Normal Sudoku Mode' : 'Killer Mode'} <span>(Shft)</span>
+                {state.killerMode ? 'Normal Sudoku Mode' : 'Killer Mode'} <span className={`${state.killerMode ? 'hidden' : 'key-indicator'}`}>(Shft)</span>
             </button>
         </div>
         <div className="top-nav-buttons">
@@ -70,14 +70,14 @@ export default function TopNav() {
             className="top-nav-button undo-button" 
             onClick={() => handleUndoClick()}
             >
-                Undo <span>(Bsp)</span>
+                Undo <span className="key-indicator">(Cmd+Z)</span>
             </button>
             <button 
             ref={buttonInputRefs.redoButton}
             className="top-nav-button redo-button" 
             onClick={() => handleRedoClick()}
             >
-                Redo <span>(Shft + Bsp)</span>
+                Redo <span className="key-indicator">(Cmd+X)</span>
             </button>
             <button className={`top-nav-button reset-button`} onClick={() => handleResetClick()}>
                 {isChecked ? 'Reset!': 'Reset'}

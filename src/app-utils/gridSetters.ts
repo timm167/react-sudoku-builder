@@ -15,6 +15,31 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
         return newGrid;
       }),
 
+    clearCellIsSelected: () =>
+      setGrid((prevState) => {
+        const newGrid = [...prevState];
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    newGrid[i][j].isSelected = false;
+                }
+            }
+            return newGrid;
+        }),
+
+    clearCellIsSelectedExcept: (col: number, row: number) => // Use this to simplify logic elsewhere
+        setGrid((prevState) => {
+            const newGrid = [...prevState];
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if (i !== col || j !== row) {
+                        newGrid[i][j].isSelected = false;
+                    }
+                }
+            }
+            return newGrid;
+        }),
+        
+
     setCellIsIncorrect: (col: number, row: number, value: boolean) =>
       setGrid((prevState) => {
         const newGrid = [...prevState];
@@ -28,6 +53,13 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
         newGrid[col][row].box = value;
         return newGrid;
       }),
+
+    setIsBeingAddedToBox: (col: number, row: number, value: boolean) =>
+        setGrid((prevState) => {
+            const newGrid = [...prevState];
+            newGrid[col][row].isBeingAddedToBox = value;
+            return newGrid;
+        }),
     
     setBoxSum: (box: string) => 
       setGrid((prevState) => {
@@ -55,18 +87,19 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
         return newGrid;
       }),
     
-    setBoxcolor: (box: string) =>
+    setBoxColor: (box: string) =>
       setGrid((prevState) => {
+        console.log('setting box color');
         const newGrid = [...prevState];
-        const color = state.currentcolorsArray[state.currentcolorsArray.length - 1];
+        const color = state.currentColorsArray[state.currentColorsArray.length - 1];
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {
             if (newGrid[i][j].box === box) {
-              newGrid[i][j].boxcolor = color;
+              newGrid[i][j].boxColor = color;
             }
           }
         }
-        stateSetters.setCurrentcolorsArray();
+        stateSetters.setCurrentColorsArray();
         return newGrid;
       })
   });

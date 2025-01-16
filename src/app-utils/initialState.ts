@@ -5,11 +5,15 @@ const initialState = {
     deletingBox: false,
     settingBoxTotal: false,
     creatingBox: false,
+    boxBeingDeclared: 'someBox',
+    boxBeingCreated: [], 
+    boxActionsList: [], // Used for undoing box creation
+    isRequestingSum: false,
     selectedCell: null,
     killerMode: false,
     cellActionsList: [],
     cellActionsRedoList: [],
-    currentcolorsArray: transparentcolors,
+    currentColorsArray: transparentcolors, // fix capitalization
 }
 
 export default initialState

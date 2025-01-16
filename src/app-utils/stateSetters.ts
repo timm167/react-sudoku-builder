@@ -19,6 +19,33 @@ export const createStateSetters = (setState) => ({
   setSelectedCell: (value: any) =>
     setState((prevState) => ({ ...prevState, selectedCell: value })),
 
+  addToBoxBeingCreated: (value: any) =>
+    setState((prevState) => ({ ...prevState, boxBeingCreated: [...prevState.boxBeingCreated, value] })),
+
+  removeFromBoxBeingCreated: () =>
+    setState((prevState) => {
+        let newBoxBeingCreated = prevState.boxBeingCreated.slice(0, -1)
+        return { ...prevState, boxBeingCreated: newBoxBeingCreated }
+    }),
+
+  clearBoxBeingCreated: () =>
+    setState((prevState) => ({ ...prevState, boxBeingCreated: [] })),
+
+  appendBoxActionsList: (value: any) =>
+    setState((prevState) => ({ ...prevState, boxActionsList: [...prevState.boxActionsList, value] })),
+
+  removeBoxActionsList: () =>
+    setState((prevState) => {
+        let newBoxActionsList = prevState.boxActionsList.slice(0, -1)
+        return { ...prevState, boxActionsList: newBoxActionsList }
+    }),
+
+  setIsRequestingSum: (value: boolean) =>
+    setState((prevState) => ({ ...prevState, isRequestingSum: value })),
+
+  setBoxBeingDeclared: (value: string) =>
+    setState((prevState) => ({ ...prevState, boxBeingDeclared: value })),
+
   setCellActionsList: (col: number, row: number, value: any) => 
     setState((prevState) => ({
       ...prevState,
@@ -52,10 +79,10 @@ export const createStateSetters = (setState) => ({
   },
 
   // If the array is empty, it will push the initial colors array to the currentcolorsArray
-  setCurrentcolorsArray: () => 
+  setCurrentColorsArray: () => 
     setState((prevState) => {
-      const newArray = [...prevState.currentcolorsArray];
-      newArray.length === 0 ? newArray.push(...initialState.currentcolorsArray): newArray.pop();
-      return { ...prevState, currentcolorsArray: newArray };
+      const newArray = [...prevState.currentColorsArray];
+      newArray.length === 0 ? newArray.push(...initialState.currentColorsArray): newArray.pop();
+      return { ...prevState, currentColorsArray: newArray };
     }),
 });

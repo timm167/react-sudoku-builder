@@ -12,7 +12,7 @@
 
 .highlight-grid {
     border: 1px solid #2a352c;
-    box-shadow: #c7b834d6 0px 0px 10px;
+    box-shadow: #d1c237 0px 0px 20px;
   }
   
   /* Individual cells */
@@ -76,15 +76,11 @@
   }
   
   .cell.selected {
-    background-color: #d0f0ff; 
+    background-color: #b3e7d0; 
+    box-shadow: 0 0 10px rgba(95, 244, 239, 0.499);
+
   }
 
-  .cell.selected:focus {
-    outline: none;
-    background-color: rgb(118, 169, 214);
-    border-color: rgb(70, 70, 209);
-  }
-  
   .cell.incorrect {
     background-color: #ffcccc; 
   }
@@ -93,4 +89,14 @@
     outline: none;
     background-color:#ffcccc; 
     border-color: rgb(209, 70, 70);
+  }
+
+  .cell.box-add-highlight {
+    box-shadow: 0 0 10px rgb(244, 239, 95);
+    background-color:#ffd43a;
+    border: 2px solid black
+  }
+
+  .cell.box-highlight {
+    border: 2px solid rgba(0, 0, 0, 0.831)
   }

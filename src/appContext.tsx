@@ -20,6 +20,9 @@ interface AppContextType {
     checkButton: RefObject<HTMLButtonElement>;
     solveButton: RefObject<HTMLButtonElement>;
     deleteBoxButton: RefObject<HTMLButtonElement>;
+    newBoxButton: RefObject<HTMLButtonElement>;
+    toggleColorButton: RefObject<HTMLButtonElement>;
+    EnterSumButton: RefObject<HTMLButtonElement>;
   };
   gridInputRefs: MutableRefObject<RefObject<HTMLInputElement>[][]>;  
 }
@@ -37,6 +40,9 @@ const defaultContext: AppContextType = {
     checkButton: { current: null },
     solveButton: { current: null },
     deleteBoxButton: { current: null },
+    newBoxButton: { current: null },
+    toggleColorButton: { current: null },
+    EnterSumButton: { current: null },
   },
   gridInputRefs: { current: Array.from({ length: 9 }, () =>
     Array.from({ length: 9 }, () => React.createRef<HTMLInputElement>())
@@ -65,6 +71,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     checkButton: useRef<HTMLButtonElement>(null),
     solveButton: useRef<HTMLButtonElement>(null),
     deleteBoxButton: useRef<HTMLButtonElement>(null),
+    newBoxButton: useRef<HTMLButtonElement>(null),
+    toggleColorButton: useRef<HTMLButtonElement>(null),
+    EnterSumButton: useRef<HTMLButtonElement>(null),
   };
 
   const gridInputRefs = useRef(
