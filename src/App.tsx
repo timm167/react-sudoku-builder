@@ -23,8 +23,7 @@ function App() {
     const keyListener = (e: KeyboardEvent) => {
       if (!/^\d$/.test(e.key) && !['Backspace'].includes(e.key)) {
         keyboardManager(e);
-    }
-    };
+    }};
     window.addEventListener("keydown", keyListener);
 
     return () => {

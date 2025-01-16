@@ -60,6 +60,13 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
             newGrid[col][row].isBeingAddedToBox = value;
             return newGrid;
         }),
+
+    setIsDisplayingBoxSum: (col:number, row:number, value: boolean) =>
+        setGrid((prevState) => {
+            const newGrid = [...prevState];
+            newGrid[col][row].isDisplayingBoxSum = value;
+            return newGrid;
+        }),
     
     setBoxSum: (box: string) => 
       setGrid((prevState) => {

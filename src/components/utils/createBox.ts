@@ -9,10 +9,18 @@ function addCellToBox(cell, state, stateSetters, gridSetters) {
 
 function createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter) {
     const boxName = `box${boxCounter}`;
+    let cellToDisplay = state.boxBeingCreated[0];
     for (const cell of state.boxBeingCreated){
+        // Find the cell with the lowest col and row to display the box number for a cleaner look
+        if (cell.col < cellToDisplay.col) {
+            cellToDisplay = cell;
+        } else if (cell.col === cellToDisplay.col && cell.row < cellToDisplay.row) {
+            cellToDisplay = cell;
+        }
         gridSetters.setCellBox(cell.col, cell.row, boxName);
         gridSetters.setIsBeingAddedToBox(cell.col, cell.row, false);
     }
+    gridSetters.setIsDisplayingBoxSum(cellToDisplay.col, cellToDisplay.row, true);
     gridSetters.setBoxColor(boxName)
     stateSetters.setCurrentColorsArray();
     stateSetters.appendBoxActionsList(state.boxBeingCreated);

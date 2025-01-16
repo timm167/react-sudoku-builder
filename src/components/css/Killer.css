@@ -33,12 +33,12 @@
 
 /* Specific button styles */
 .delete-box-button {
-    background-color: #d1c4e9;
-    color: #333;
+    background-color: #f28181;
+    color: #000000;
 }
 
 .delete-box-button:hover {
-    background-color: #b39ddb;
+    background-color: #ee6565;
 }
 
 .set-box-total-button {
@@ -161,16 +161,35 @@
 
 }
 
-.highlight-button {
+.highlight-delete-button {
     border: 2px solid #a5050574;
     box-shadow: #793232 0px 0px 20px;
 }
 
-.highlight-button:hover {
+.highlight-delete-button:hover {
     border: 2px solid #a5050598;
     box-shadow: #793232 0px 0px 20px;
 }
 
+.highlight-create-button {
+    border: 2px solid #c47b0598;
+    box-shadow: #e0ae25 0px 0px 20px;
+}
+
+.highlight-create-button:hover {
+    border: 2px solid #a5820598;
+    box-shadow: #796132 0px 0px 20px;
+}
+
+.highlight-set-button {
+    border: 2px solid #a540c474;
+    box-shadow: #6d3279 0px 0px 20px;
+}
+
+.highlight-set-button:hover {
+    border: 2px solid #a540c474;
+    box-shadow: #6d3279 0px 0px 20px;
+}
 
 /* Colors */
 /* Not accurate to name */

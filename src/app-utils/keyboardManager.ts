@@ -50,6 +50,8 @@ export const createKeyboardManager = (grid, state, stateSetters, gridSetters, in
         } else if (e.key === "Tab") {
             e.preventDefault();
             buttonInputRefs.toggleColorButton.current.click();
+        } else if (e.key === "Enter") {
+            buttonInputRefs.EnterSumButton.current.click();
         }
     };
 };

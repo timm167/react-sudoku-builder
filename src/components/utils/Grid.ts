@@ -15,6 +15,7 @@ export interface Cell {
     isSelected: boolean;
     isBeingAddedToBox: boolean;
     isIncorrect: boolean;
+    isDisplayingBoxSum: boolean;
     box: string;
     boxSum: number;
     boxDeclaredSum: number;
@@ -35,6 +36,7 @@ function initializeCell(col: number, row: number): Cell {
         isSelected: false, // Helps keyboard navigation, input, and graphics
         isBeingAddedToBox: false, // Will be useful for graphics
         isIncorrect: false, // Sets value to wrong when a constraint is violated
+        isDisplayingBoxSum: false, // Will be useful for box constraints 
         box: 'noBox', // Will be useful for box constraints built later
         boxSum: 0, // Will be useful for box constraints built later
         boxDeclaredSum: 0, // Will be useful for box constraints built later

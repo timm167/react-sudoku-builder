@@ -7,7 +7,7 @@ import {addCellToBox }from "./utils/createBox";
 
 export default function SudokuGrid() {
     // Access context
-    const { grid, state, stateSetters, gridSetters, gridInputRefs } = useAppContext();
+    const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
 
     useEffect(() => {}, [grid]);
 
@@ -55,6 +55,9 @@ export default function SudokuGrid() {
                                 ${cell.boxColor}`}
                             onClick={() => handleCellClick(cell)}
                         >
+                            <span className="box-sum-displayer">
+                                {cell.isDisplayingBoxSum && cell.boxDeclaredSum !== 0 ? cell.boxDeclaredSum : ''}
+                            </span>
                             <input 
                                 ref={gridInputRefs.current[colIndex][rowIndex]}
                                 type="text"
