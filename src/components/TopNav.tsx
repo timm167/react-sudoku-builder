@@ -5,7 +5,7 @@ import { handleKillerUndo, handleKillerRedo, handleSave, handleSudokuUndo, handl
 
 export default function TopNav() {
     const [isChecked, setIsChecked] = useState(false);
-    const { state, stateSetters, grid, gridSetters } = useAppContext();
+    const { state, stateSetters, grid, gridSetters, buttonInputRefs } = useAppContext();
 
     const handleUndoClick = () => { 
         setIsChecked(false);
@@ -57,6 +57,7 @@ export default function TopNav() {
         <>
         <div className="killer-button-container">
             <button 
+                ref={buttonInputRefs.killerButton}
                 className={`top-nav-button toggle-killer-button ${state.killerMode ? 'exit-killer-mode' : ''}`} 
                 onClick={() => handleKillerClick()}
             >
@@ -64,10 +65,18 @@ export default function TopNav() {
             </button>
         </div>
         <div className="top-nav-buttons">
-            <button className="top-nav-button undo-button" onClick={() => handleUndoClick()}>
+            <button 
+            ref={buttonInputRefs.undoButton}
+            className="top-nav-button undo-button" 
+            onClick={() => handleUndoClick()}
+            >
                 Undo <span>(Bsp)</span>
             </button>
-            <button className="top-nav-button redo-button" onClick={() => handleRedoClick()}>
+            <button 
+            ref={buttonInputRefs.redoButton}
+            className="top-nav-button redo-button" 
+            onClick={() => handleRedoClick()}
+            >
                 Redo <span>(Shft + Bsp)</span>
             </button>
             <button className={`top-nav-button reset-button`} onClick={() => handleResetClick()}>

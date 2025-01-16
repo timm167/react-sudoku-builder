@@ -17,7 +17,7 @@ import { useAppContext } from './appContext';
 
 function App() {
   // Access the context
-  const { grid, state, stateSetters, gridSetters, buttonInputRefs, gridInputRefs } = useAppContext();
+  const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
 
 
 
@@ -33,7 +33,7 @@ function App() {
   }, [grid, state, stateSetters, gridSetters]);
 
   // Initialize keyboard manager
-  const keyboardManager = createKeyboardManager(grid, state, stateSetters, gridSetters, gridInputRefs);
+  const keyboardManager = createKeyboardManager(grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs);
 
   return (
     <>

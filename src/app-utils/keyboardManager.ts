@@ -33,16 +33,19 @@ function navigateGrid(direction, grid, state, stateSetters, gridSetters, inputRe
 }
 
 // Main function to create the keyboard manager
-export const createKeyboardManager = (grid, state, stateSetters, gridSetters, inputRefs) => {
+export const createKeyboardManager = (grid, state, stateSetters, gridSetters, inputRefs, buttonInputRefs) => {
     return (e) => {
         // Only trigger navigation if there's a selected cell and a relevant arrow key is pressed
         if (state.selectedCell && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
             navigateGrid(e.key, grid, state, stateSetters, gridSetters, inputRefs);
+        } else if (e.key === "Backspace" && (e.ctrlKey || e.shiftKey)) {
+            buttonInputRefs.redoButton.current.click();
+        } else if (e.key === "Backspace") {
+            buttonInputRefs.undoButton.current.click();
         }
+        //cmd s to save
+        // add everything else tomorrow and tonight just go and eat a bagel
 
-        // Handle Backspace with ctrl/shift keys to clear redo list
-        if (e.key === "Backspace" && (e.ctrlKey || e.shiftKey)) {
-            stateSetters.clearCellActionsRedoList();
-        }
+
     };
 };
