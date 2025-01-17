@@ -8,6 +8,7 @@ function addCellToBox(cell, state, stateSetters, gridSetters) {
 
     // Check if the boxBeingCreated is empty or if the cell is adjacent to it
     if (state.boxBeingCreated.length === 0 || checkIsAdjacent(cell, state)) {
+        
         // Clear any currently selected cells
         gridSetters.clearCellIsSelected();
 

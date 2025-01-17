@@ -17,12 +17,6 @@ export default function TopNav() {
         }
         // If there are no actions to undo, do nothing
         if (state.cellActionsList.length === 0) {return}
-
-        // If there's one action, it is empty so clear it to avoid unnecessary data being stored
-        if (state.cellActionsList.length === 1) {
-            stateSetters.popCellActionsList()
-            return
-        } 
         
         // Undo the last action
         handleSudokuUndo(state, stateSetters, gridSetters)

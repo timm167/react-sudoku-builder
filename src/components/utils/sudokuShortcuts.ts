@@ -1,3 +1,4 @@
+// This file uses opposing data stacks to handle undo and redo actions for the Sudoku grid.
 
 // ------------------ 
 // Undo
@@ -5,43 +6,32 @@
 
 // Handle undo for Sudoku cell-related actions
 function handleSudokuUndo(state, stateSetters, gridSetters) {
+  if (state.cellActionsList.length === 0) {return}
 
-  // Retrieve the current, previous, and two-steps-back actions from the cell actions list
-  const currentItem = state.cellActionsList[state.cellActionsList.length - 1];
-  const undoItem = state.cellActionsList[state.cellActionsList.length - 2];
-  const itemTwoBack = state.cellActionsList[state.cellActionsList.length - 3] || undoItem;
+  // Retrieve the most recent undo action
+  const lastAction = state.cellActionsList[state.cellActionsList.length - 1];
 
-  // Check if input validation is enabled
-  if (state.canValidateInputs) {
-
-    // If the previous action cleared a cell (value is 0), move it to the redo list
-    // This is important due to prepending actions with empty actions to allow for clearing cells
-    if (undoItem.value === 0) {
-      stateSetters.appendCellActionsRedoList(undoItem['col'], undoItem['row'], 0);
-      stateSetters.popCellActionsList(); 
-    }
-
-    // Remove the current action and add it to the redo list for potential redo operations
+  // If the last action was an incorrect input, undo the incorrect action
+  if (lastAction.isIncorrect) {
+    gridSetters.setCellIsIncorrect(lastAction.col, lastAction.row, false);
+    gridSetters.setCellValue(lastAction.col, lastAction.row, lastAction.from);
     stateSetters.popCellActionsList();
-    stateSetters.appendCellActionsRedoList(currentItem['col'], currentItem['row'], currentItem['value']);
-
-    // Update the grid to reflect the undo action
-    gridSetters.setCellValue(undoItem['col'], undoItem['row'], undoItem['value']);
-
-    // Update cell selection to focus on the appropriate cell after undo
-    gridSetters.setCellIsSelected(state.selectedCell['col'], state.selectedCell['row'], false); // Deselect the current cell
-    gridSetters.setCellIsSelected(itemTwoBack['col'], itemTwoBack['row'], true); // Select the cell two steps back
-    gridSetters.setCellIsSelected(undoItem['col'], undoItem['row'], false); // Deselect the previously undone cell
-
-    // Ensure the undone cell is no longer marked as incorrect
-    gridSetters.setCellIsIncorrect(undoItem['col'], undoItem['row'], false);
-  } else {
-
-    // If validation was disabled, re-enable it and handle corrections
-    stateSetters.setCanValidateInputs(true);
-    stateSetters.popCellActionsList(); // Remove the invalid action
-    gridSetters.setCellIsIncorrect(currentItem['col'], currentItem['row'], false); // Clear incorrect flag for the current cell
+    return;
   }
+
+  // Update the grid to reflect the undo action
+  gridSetters.setCellValue(lastAction.col, lastAction.row, lastAction.from);
+  
+  // Update cell selection to focus on the appropriate cell after undo
+  if (state.cellActionsList.length > 1) {
+    const oneActionBack = state.cellActionsList[state.cellActionsList.length - 2] 
+    gridSetters.setCellIsSelected(oneActionBack.col, oneActionBack.row, true); // Select the cell just before the undone cell
+    gridSetters.clearCellIsSelectedExcept(oneActionBack.col, oneActionBack.row); // Deselect the current cell
+  }
+  
+  // Remove the last action from the actions list and apply it to the redo list
+  stateSetters.popCellActionsList(); 
+  stateSetters.appendCellActionsRedoList(lastAction);
 }
 
 // ------------------ 
@@ -49,24 +39,22 @@ function handleSudokuUndo(state, stateSetters, gridSetters) {
 // ------------------
 
 // Handle redo for Sudoku cell-related actions
+// Mirrors the undo function
 function handleSudokuRedo(state, stateSetters, gridSetters) {
   
-  // Retrieve the most recent redo action and the one before it
-  const redoItem = state.cellActionsRedoList[state.cellActionsRedoList.length - 1];
-  const recentItem = state.cellActionsRedoList[state.cellActionsRedoList.length - 2];
-
-  // If either the most recent redo or the one before involves clearing a cell, handle it
-  if (recentItem['value'] === 0 || redoItem['value'] === 0) {
-    stateSetters.popCellActionsRedoList(); // Remove the redo action from the redo list
-    stateSetters.appendCellActionsList(recentItem['col'], recentItem['row'], 0); // Add the cleared cell action back to the actions list
-  }
-
-  // Remove the redo action and apply it to the actions list
+  const lastAction = state.cellActionsRedoList[state.cellActionsRedoList.length - 1];
+  
   stateSetters.popCellActionsRedoList();
-  stateSetters.appendCellActionsList(redoItem['col'], redoItem['row'], redoItem['value']);
+  stateSetters.appendCellActionsList(lastAction);
 
   // Update the grid to reflect the redo action
-  gridSetters.setCellValue(redoItem['col'], redoItem['row'], redoItem['value']);
+  gridSetters.setCellValue(lastAction.col, lastAction.row, lastAction.to);
+
+  // Update cell selection to focus on the appropriate cell after redo
+  gridSetters.setCellIsSelected(lastAction.col, lastAction.row, true); // Deselect the current cell
+  gridSetters.clearCellIsSelectedExcept(lastAction.col, lastAction.row); // Select the cell just before the undone cell
+
+
 }
 
 export { handleSudokuUndo, handleSudokuRedo };

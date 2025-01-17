@@ -12,6 +12,8 @@ function checkSudoku(e, cell, grid, gridSetters) {
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
         const currentCell = grid[i][j];
+        // Prevents error with self-comparison
+        if (cell.row === j && cell.col === i) continue;
         if (currentCell.col === colIndex) gridCol.push(currentCell.value);
         if (currentCell.row === rowIndex) gridRow.push(currentCell.value);
         if (currentCell.cube === cubeIndex) gridCube.push(currentCell.value);
@@ -30,6 +32,7 @@ function checkSudoku(e, cell, grid, gridSetters) {
   
   // Helper function to validate the input
   function validateSudoku(e, cell, grid, state, stateSetters, gridSetters) {
+    
     // If the previous input caused an error, undo that action
     if (!state.canValidateInputs) {
       const lastAction = state.cellActionsList[state.cellActionsList.length - 1];
@@ -53,19 +56,29 @@ function checkSudoku(e, cell, grid, gridSetters) {
     // Validate the input using Sudoku rules
     if (!checkSudoku(e, cell, grid, gridSetters)) {
       stateSetters.setCanValidateInputs(false);
-  
-      // Log the invalid action with a zero value for undo purposes
-      stateSetters.appendCellActionsList(cell.col, cell.row, 0);
+      
+      // Log the incorrect input for potential undo
+      stateSetters.appendCellActionsList({
+        col: cell.col,
+        row: cell.row,
+        from: grid[cell.col][cell.row].value,
+        to: 0,
+        isIncorrect: true
+      });
+      
+      // Temporarily set the cell value to the incorrect input (Any other action undoes this)
+      gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
       return;
     }
-  
-    // Add an undo entry if the cell was initially empty
-    if (cell.value === 0) {
-      stateSetters.appendCellActionsList(cell.col, cell.row, 0);
-    }
-  
+
     // Update state and grid for the valid input
-    stateSetters.appendCellActionsList(cell.col, cell.row, parseInt(e));
+    stateSetters.appendCellActionsList({ 
+        col: cell.col,
+        row: cell.row,
+        from: grid[cell.col][cell.row].value,
+        to: parseInt(e),
+        isIncorrect: false
+    });
     stateSetters.setCanValidateInputs(true);
     gridSetters.setCellIsIncorrect(cell.col, cell.row, false);
     gridSetters.setCellValue(cell.col, cell.row, parseInt(e));

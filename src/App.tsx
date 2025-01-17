@@ -1,6 +1,7 @@
 // To do:
 // Beautify my component codebase and component utils below grid.ts (rest done already)
 // Make undo/redo in normal mode simpler by storing whole grid state
+// Make first incorrect value still display the number
 // Add type declarations to action lists
 // Add box logic i.e. the actual math for the killer sudoku
 // set box sums

@@ -51,10 +51,10 @@ export const createStateSetters = (setState) => ({
   // State Modifiers for undo/redo Cell Actions (i.e. during normal sudoku mode)  
   // ---------------------------------------------------
 
-  appendCellActionsList: (col: number, row: number, value: any) =>
+  appendCellActionsList: ( value: object) =>
     setState((prevState) => ({
       ...prevState,
-      cellActionsList: [...prevState.cellActionsList, { col, row, value }],
+      cellActionsList: [...prevState.cellActionsList, value],
     })),
 
   popCellActionsList: () =>
@@ -63,16 +63,17 @@ export const createStateSetters = (setState) => ({
       return { ...prevState, cellActionsList: updatedList };
     }),
 
-  appendCellActionsRedoList: (col: number, row: number, value: any) =>
+  appendCellActionsRedoList: ( value: object ) =>
     setState((prevState) => ({
       ...prevState,
-      cellActionsRedoList: [...prevState.cellActionsRedoList, { col, row, value }],
+      cellActionsRedoList: [...prevState.cellActionsRedoList, value],
     })),
 
   popCellActionsRedoList: () =>
     setState((prevState) => {
       const newArray = [...prevState.cellActionsRedoList];
       newArray.pop();
+      console.log("new redo list", newArray)
       return { ...prevState, cellActionsRedoList: newArray };
     }),
 
