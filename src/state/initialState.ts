@@ -1,5 +1,21 @@
 import transparentcolors from "../utils/colors";
 
+interface CellAction {
+    col: number; // The column index of the cell
+    row: number; // The row index of the cell
+    from: number; // The value before the action 
+    to: number; // The value after the action 
+    isIncorrect: boolean; // A flag indicating whether the cell is incorrect
+  }
+
+interface BoxAction {
+    boxName: string; // The name of the box
+    cells: { col: number; row: number }[]; // Array of cells with their column and row
+    type: 'create' | 'delete'; // Action type: create or delete
+    color: string; // The color associated with the box
+    displayCell: { col: number; row: number }; // The cell that will display the sum or details of the box
+}
+
 type SelectedCell = { col: number; row: number } | null;
 
 // The structure of the entire initial state
@@ -10,13 +26,13 @@ type InitialState = {
   creatingBox: boolean; // Tracks if a box is being created
   boxBeingDeclared: string; // Name of the box being declared
   boxBeingCreated: string[]; // List of cells in the box being created
-  boxActionsList: any[]; // List of actions performed on boxes
-  boxActionsRedoList: any[]; // List of redoable actions for boxes
+  boxActionsList: BoxAction[]; // List of actions performed on boxes
+  boxActionsRedoList: BoxAction[]; // List of redoable actions for boxes
   isRequestingSum: boolean; // Tracks if the user is requesting a sum display
   selectedCell: SelectedCell; // Currently selected cell in the grid
   killerMode: boolean; // Indicates if killer Sudoku mode is active
-  cellActionsList: any[]; // List of actions performed on cells
-  cellActionsRedoList: any[]; // List of redoable actions for cells
+  cellActionsList: CellAction[]; // List of actions performed on cells
+  cellActionsRedoList: CellAction[]; // List of redoable actions for cells
   currentColorsArray: string[]; // Array of available colours for boxes
 };
 
@@ -39,3 +55,5 @@ const initialState: InitialState = {
 };
 
 export default initialState;
+
+export type { SelectedCell, BoxAction, CellAction, InitialState };

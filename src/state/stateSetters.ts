@@ -1,4 +1,4 @@
-import initialState from './initialState';
+import initialState, {SelectedCell, BoxAction, CellAction} from './initialState';
 
 export const createStateSetters = (setState) => ({
   
@@ -23,7 +23,7 @@ export const createStateSetters = (setState) => ({
   // State Modifiers for creating and deleting boxes
   // ---------------------------------------------------
 
-  appendBoxBeingCreated: (value: any) =>
+  appendBoxBeingCreated: (value: string) =>
     setState((prevState) => ({ ...prevState, boxBeingCreated: [...prevState.boxBeingCreated, value] })),
 
   clearBoxBeingCreated: () =>
@@ -37,7 +37,7 @@ export const createStateSetters = (setState) => ({
   setKillerMode: (value: boolean) =>
     setState((prevState) => ({ ...prevState, killerMode: value })),
 
-  setSelectedCell: (value: any) =>
+  setSelectedCell: (value: SelectedCell) =>
     setState((prevState) => ({ ...prevState, selectedCell: value })),
 
   setBoxBeingDeclared: (value: string) =>
@@ -51,7 +51,7 @@ export const createStateSetters = (setState) => ({
   // State Modifiers for undo/redo Cell Actions (i.e. during normal sudoku mode)  
   // ---------------------------------------------------
 
-  appendCellActionsList: ( value: object) =>
+  appendCellActionsList: ( value: CellAction) =>
     setState((prevState) => ({
       ...prevState,
       cellActionsList: [...prevState.cellActionsList, value],
@@ -63,7 +63,7 @@ export const createStateSetters = (setState) => ({
       return { ...prevState, cellActionsList: updatedList };
     }),
 
-  appendCellActionsRedoList: ( value: object ) =>
+  appendCellActionsRedoList: ( value: CellAction ) =>
     setState((prevState) => ({
       ...prevState,
       cellActionsRedoList: [...prevState.cellActionsRedoList, value],
@@ -86,7 +86,7 @@ export const createStateSetters = (setState) => ({
   // State Modifiers for Undo/Redo Box Actions (i.e. during killer mode)
   // ---------------------------------------------------
 
-  appendBoxActionsList: (value: any) =>
+  appendBoxActionsList: (value: BoxAction) =>
     setState((prevState) => ({ ...prevState, boxActionsList: [...prevState.boxActionsList, value] })),
 
   popBoxActionsList: () =>
@@ -95,13 +95,13 @@ export const createStateSetters = (setState) => ({
       return { ...prevState, boxActionsList: newBoxActionsList };
     }),
 
-  removeFromBoxActionsList: (value: string) =>
+  removeFromBoxActionsList: (value: BoxAction) =>
     setState((prevState) => {
       let newBoxActionsList = prevState.boxActionsList.filter((box) => box[0] !== value);
       return { ...prevState, boxActionsList: newBoxActionsList };
     }),
 
-  appendBoxActionsRedoList: (value: any) =>
+  appendBoxActionsRedoList: (value: BoxAction) =>
     setState((prevState) => ({ ...prevState, boxActionsRedoList: [...prevState.boxActionsRedoList, value] })),
 
   popBoxActionsRedoList: () =>

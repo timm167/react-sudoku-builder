@@ -11,8 +11,6 @@ function deleteUndo(boxAction, gridSetters) {
   }
 }
 
-
-
 // Placeholder for saving the grid state
 function handleSave(grid) {
   console.log('Save');

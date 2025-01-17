@@ -1,8 +1,5 @@
 // To do:
 // Beautify my component codebase and component utils below grid.ts (rest done already)
-// Make undo/redo in normal mode simpler by storing whole grid state
-// Make first incorrect value still display the number
-// Add type declarations to action lists
 // Add box logic i.e. the actual math for the killer sudoku
 // set box sums
 // Collect and configure data to be sent to the backend including fixing values
@@ -16,22 +13,24 @@
 // Configure with Docker
 // Deploy
 
+// --- External Dependencies ---
 import React, { useEffect } from 'react';
 
-// Utility functions or constants
+// --- Utility Functions or Constants ---
 import { createKeyboardManager } from './utils/keyboardManager';
 
-// Components
+// --- Components ---
 import SudokuGrid from './components/Grid';
 import TopNav from './components/TopNav';
 import Killer from './components/Killer';
 import Solve from './components/Solve';
 
-// Styles
+// --- Styles ---
 import './App.css';
 
-// Import context hook
+// --- Context ---
 import { useAppContext } from './appContext';
+
 
 // App Component
 function App() {

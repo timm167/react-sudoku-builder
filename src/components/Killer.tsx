@@ -1,24 +1,33 @@
-import React, {useState, FormEvent, useEffect} from 'react';
+// --- React and Necessary Hooks ---
+import React, { useState, FormEvent, useEffect } from 'react';
+
+// --- Context ---
 import { useAppContext } from '../appContext';
+
+// --- Styles ---
 import './css/Killer.css';
+
+// --- Utility Functions ---
 import { createBox } from './utils/createBox';
 import { declareBoxSum } from './utils/sumBox';
 
-
+// --- Killer Component ---
 export default function Killer() {
+    
+    // --- State Management ---
     const [boxCounter, setBoxCounter] = useState(0);
     const { state, stateSetters, gridSetters, buttonInputRefs } = useAppContext();
 
-    // Using this to focus on the input field when the button is clicked
-    useEffect (() => {
-        if (state.isRequestingSum){
+    // --- Side Effects ---
+    // Focus on the input field when sum input is requested
+    useEffect(() => {
+        if (state.isRequestingSum) {
             buttonInputRefs.enterSumInput.current.focus();
         }
     }, [state.isRequestingSum]);
 
-    // Four functions below just handle the various buttons in the killer mode
-    // Currently they just update state but they will need to do more later
-
+    // --- Button Handlers ---
+    // Handle Delete Box button click
     const handleDeleteBoxClick = () => {
         stateSetters.setCreatingBox(false);
         stateSetters.setSettingBoxTotal(false);
@@ -26,6 +35,7 @@ export default function Killer() {
         stateSetters.setDeletingBox(!state.deletingBox);
     }
 
+    // Handle Set Box Sum button click
     const handleSetBoxSumClick = () => {
         stateSetters.setCreatingBox(false);
         stateSetters.setDeletingBox(false);
@@ -33,12 +43,13 @@ export default function Killer() {
         stateSetters.setSettingBoxTotal(!state.settingBoxTotal);
     }
 
+    // Handle Create Box button click
     const handleCreateBoxClick = () => {
         stateSetters.setDeletingBox(false);
         stateSetters.setSettingBoxTotal(false);
         stateSetters.setIsRequestingSum(false);
         if (state.creatingBox && state.boxBeingCreated.length !== 0) {
-            createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter)
+            createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter);
         }
         if (!state.creatingBox) {
             stateSetters.setCreatingBox(true);
@@ -48,10 +59,12 @@ export default function Killer() {
         }
     }
 
+    // Handle Toggle Color button click
     const handleToggleColorClick = () => {
-        stateSetters.cycleCurrentColorsArray()
+        stateSetters.cycleCurrentColorsArray();
     }
 
+    // Handle form submission for box sum declaration
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const sumInput = (e.target as HTMLFormElement).elements.namedItem('sumInput') as HTMLInputElement;
@@ -62,42 +75,52 @@ export default function Killer() {
 
     return (
         <>
-        <div className={`${state.isRequestingSum ? '' : 'hidden'} submit-holder`}>
-            <form onSubmit={handleSubmit} className='submit-holder'>
-                <input ref={buttonInputRefs.enterSumInput} type="number" name="sumInput" id="sumInput" className='form-input' max={405}/>
-                <button ref={buttonInputRefs.enterSumButton} type="submit" className='submit-button'>Enter</button>
-            </form>
-        </div>
-        <div className='killer-buttons'>
-            <div className={`inner-killer-buttons ${state.killerMode ? '' : 'hidden'} `}>
-                <button 
-                    className={`killer-button delete-box-button ${state.deletingBox ? 'highlight-delete-button' : ''}`}
-                    onClick={handleDeleteBoxClick}
-                >
-                    {`${state.deletingBox ? 'Select a Box' : 'Delete Box'}`}
-                </button>
-                <button 
-                    className={`killer-button set-box-total-button ${state.settingBoxTotal ? 'highlight-set-button' : ''}`}
-                    onClick={handleSetBoxSumClick}
-                >
-                    {`${state.settingBoxTotal ?  'Select a Box' : 'Set Box Sum'}`}
-                </button>
-                <button 
-                    ref={buttonInputRefs.newBoxButton} 
-                    className={`killer-button create-box-button ${state.creatingBox ? 'highlight-create-button' : ''}`}
-                    onClick={handleCreateBoxClick}
-                >
-                    {`${state.creatingBox ? 'Place Box' : 'New Box'}`} <span className='key-indicator'>(Cmd+C)</span>
-                </button>
-                <button 
-                    ref={buttonInputRefs.toggleColorButton}
-                    className={`killer-button toggle-color-button ${state.currentColorsArray[state.currentColorsArray.length - 1]}`} 
-                    onClick={handleToggleColorClick}
-                >
-                    Toggle color <span className='key-indicator'>(Tab)</span>
-                </button>
+            {/* Sum Input Form */}
+            <div className={`${state.isRequestingSum ? '' : 'hidden'} submit-holder`}>
+                <form onSubmit={handleSubmit} className='submit-holder'>
+                    <input ref={buttonInputRefs.enterSumInput} type="number" name="sumInput" id="sumInput" className='form-input' max={405}/>
+                    <button ref={buttonInputRefs.enterSumButton} type="submit" className='submit-button'>Enter</button>
+                </form>
             </div>
-        </div>
+
+            {/* Killer Mode Buttons */}
+            <div className='killer-buttons'>
+                <div className={`inner-killer-buttons ${state.killerMode ? '' : 'hidden'}`}>
+                    {/* Delete Box Button */}
+                    <button 
+                        className={`killer-button delete-box-button ${state.deletingBox ? 'highlight-delete-button' : ''}`}
+                        onClick={handleDeleteBoxClick}
+                    >
+                        {`${state.deletingBox ? 'Select a Box' : 'Delete Box'}`}
+                    </button>
+
+                    {/* Set Box Sum Button */}
+                    <button 
+                        className={`killer-button set-box-total-button ${state.settingBoxTotal ? 'highlight-set-button' : ''}`}
+                        onClick={handleSetBoxSumClick}
+                    >
+                        {`${state.settingBoxTotal ?  'Select a Box' : 'Set Box Sum'}`}
+                    </button>
+
+                    {/* Create Box Button */}
+                    <button 
+                        ref={buttonInputRefs.newBoxButton} 
+                        className={`killer-button create-box-button ${state.creatingBox ? 'highlight-create-button' : ''}`}
+                        onClick={handleCreateBoxClick}
+                    >
+                        {`${state.creatingBox ? 'Place Box' : 'New Box'}`} <span className='key-indicator'>(Cmd+C)</span>
+                    </button>
+
+                    {/* Toggle Color Button */}
+                    <button 
+                        ref={buttonInputRefs.toggleColorButton}
+                        className={`killer-button toggle-color-button ${state.currentColorsArray[state.currentColorsArray.length - 1]}`} 
+                        onClick={handleToggleColorClick}
+                    >
+                        Toggle color <span className='key-indicator'>(Tab)</span>
+                    </button>
+                </div>
+            </div>
         </>
-    )
+    );
 }

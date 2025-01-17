@@ -1,10 +1,12 @@
-// Importing React and necessary hooks/types
+// --- React and Necessary Hooks/Types ---
 import React, { createContext, useContext, useState, useRef, ReactNode, RefObject, MutableRefObject } from 'react';
 
-// Importing utilities, initial states, and helpers
+// --- State Management ---
 import initialState from './state/initialState';
 import { createStateSetters } from './state/stateSetters';
 import { createGridSetters } from './state/gridSetters';
+
+// --- Utilities ---
 import { initializeGrid } from './components/utils/Grid';
 
 

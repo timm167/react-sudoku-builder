@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppContext } from "../appContext";
+// import { useAppContext } from "../appContext";
 import "./css/Solve.css";
 
 export default function Solve() {
