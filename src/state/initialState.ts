@@ -6,6 +6,7 @@ interface CellAction {
     from: number; // The value before the action 
     to: number; // The value after the action 
     isIncorrect: boolean; // A flag indicating whether the cell is incorrect
+    box: string; // The box the cell belongs to
   }
 
 interface BoxAction {
@@ -14,6 +15,7 @@ interface BoxAction {
     type: 'create' | 'delete'; // Action type: create or delete
     color: string; // The color associated with the box
     displayCell: { col: number; row: number }; // The cell that will display the sum or details of the box
+    declaredSum: number; // The declared sum of the box
 }
 
 type SelectedCell = { col: number; row: number } | null;

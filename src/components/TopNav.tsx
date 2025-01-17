@@ -25,7 +25,7 @@ export default function TopNav() {
     const handleUndoClick = () => { 
         setIsChecked(false);
         if (state.killerMode) {
-            handleKillerUndo(state, stateSetters, gridSetters);
+            handleKillerUndo(grid, state, stateSetters, gridSetters);
             return;
         }
         
@@ -62,7 +62,6 @@ export default function TopNav() {
 
     // Handle save button click
     const handleSaveClick = () => {
-        console.log(state.boxActionsList);
         handleSave(grid);
     }
 

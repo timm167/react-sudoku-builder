@@ -1,4 +1,3 @@
-// Helper function to calculate the cube index based on column and row
 // Cube index is used to group cells into 3x3 sub-grids
 function getCubeIndex(col: number, row: number): number {
   return Math.floor(col / 3) * 3 + Math.floor(row / 3);

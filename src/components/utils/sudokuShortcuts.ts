@@ -20,6 +20,8 @@ function handleSudokuUndo(state, stateSetters, gridSetters) {
   }
 
   // Update the grid to reflect the undo action
+  gridSetters.subFromBoxSum(lastAction.box, lastAction.to);
+  gridSetters.addToBoxSum(lastAction.box, lastAction.from);
   gridSetters.setCellValue(lastAction.col, lastAction.row, lastAction.from);
   
   // Update cell selection to focus on the appropriate cell after undo
@@ -48,6 +50,8 @@ function handleSudokuRedo(state, stateSetters, gridSetters) {
   stateSetters.appendCellActionsList(lastAction);
 
   // Update the grid to reflect the redo action
+  gridSetters.subFromBoxSum(lastAction.box, lastAction.from);
+  gridSetters.addToBoxSum(lastAction.box, lastAction.to);
   gridSetters.setCellValue(lastAction.col, lastAction.row, lastAction.to);
 
   // Update cell selection to focus on the appropriate cell after redo

@@ -7,7 +7,7 @@ import { createStateSetters } from './state/stateSetters';
 import { createGridSetters } from './state/gridSetters';
 
 // --- Utilities ---
-import { initializeGrid } from './components/utils/Grid';
+import { initializeGrid } from './state/initialGrid';
 
 
 // ---------------------------------------------------

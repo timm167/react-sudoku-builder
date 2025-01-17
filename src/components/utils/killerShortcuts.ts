@@ -1,21 +1,27 @@
-import { deleteUndo } from './TopNav';
+import { deleteShortcut } from './TopNav';
 
 // ------------------ 
 // Undo
 // ------------------
 
 // Handle undo for Killer Sudoku box-related actions
-function handleKillerUndo(state, stateSetters, gridSetters) {
+function handleKillerUndo(grid, state, stateSetters, gridSetters) {
     gridSetters.clearCellIsSelected();
   
     // Check if there are actions to undo
     if (state.boxActionsList.length > 0) {
       const boxAction = state.boxActionsList[state.boxActionsList.length - 1];
-      stateSetters.appendBoxActionsRedoList(boxAction);
+      console.log("boxAction", boxAction);
+      console.log("boxActionDecl", boxAction['declaredSum']);
+
+      // Save the declared sum for redo as this is not necessarily stored when the box is created
+      let boxActionWithDeclaredSum = boxAction;
+      boxActionWithDeclaredSum['declaredSum'] = grid[boxAction['cells'][0].col][boxAction['cells'][0].row].boxDeclaredSum;
+      stateSetters.appendBoxActionsRedoList(boxActionWithDeclaredSum);
   
       // Undo box creation by deleting it
       if (boxAction['type'] === 'create') {
-        deleteUndo(boxAction, gridSetters);
+        deleteShortcut(boxAction, gridSetters);
       }
   
       // Undo box deletion by creating it
@@ -26,6 +32,8 @@ function handleKillerUndo(state, stateSetters, gridSetters) {
         // Restore box colour and display sum
         gridSetters.setSpecifiedBoxColor(boxName, boxAction['color']);
         gridSetters.setIsDisplayingBoxSum(cellToDisplay['col'], cellToDisplay['row'], true);
+        gridSetters.setBoxDeclaredSum(boxName, boxAction['declaredSum']);
+        gridSetters.applyBoxSum(boxName);
   
         // Reassign box to all its cells
         for (const cell of boxAction['cells']) {
@@ -53,7 +61,7 @@ function handleKillerUndo(state, stateSetters, gridSetters) {
   
       // Redo box deletion by deleting it
       if (boxAction['type'] === 'delete') {
-        deleteUndo(boxAction, gridSetters);
+        deleteShortcut(boxAction, gridSetters);
       }
   
       // Redo box creation by creating it
@@ -62,8 +70,13 @@ function handleKillerUndo(state, stateSetters, gridSetters) {
         const cellToDisplay = boxAction['displayCell'];
   
         // Restore box colour and display sum
+        console.log(cellToDisplay);
+        console.log("boxAction", boxAction)
+        console.log("boxdeclared", boxAction['declaredSum']);
         gridSetters.setSpecifiedBoxColor(boxName, boxAction['color']);
         gridSetters.setIsDisplayingBoxSum(cellToDisplay['col'], cellToDisplay['row'], true);
+        gridSetters.setBoxDeclaredSum(boxName, boxAction['declaredSum']);
+        gridSetters.applyBoxSum(boxName);
   
         // Reassign box to all its cells
         for (const cell of boxAction['cells']) {

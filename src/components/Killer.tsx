@@ -36,7 +36,7 @@ export default function Killer() {
     }
 
     // Handle Set Box Sum button click
-    const handleSetBoxSumClick = () => {
+    const handleapplyBoxSumClick = () => {
         stateSetters.setCreatingBox(false);
         stateSetters.setDeletingBox(false);
         stateSetters.setIsRequestingSum(false);
@@ -97,7 +97,7 @@ export default function Killer() {
                     {/* Set Box Sum Button */}
                     <button 
                         className={`killer-button set-box-total-button ${state.settingBoxTotal ? 'highlight-set-button' : ''}`}
-                        onClick={handleSetBoxSumClick}
+                        onClick={handleapplyBoxSumClick}
                     >
                         {`${state.settingBoxTotal ?  'Select a Box' : 'Set Box Sum'}`}
                     </button>

@@ -86,13 +86,66 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
   // State Modifiers for Box Sum and Declaration
   // ---------------------------------------------------
 
-  setBoxSum: (box: string) =>
+  applyBoxSum: (box: string) =>
+    setGrid((prevState) => {
+
+      // Iterates through totaling the values of the cells in the box
+      const newGrid = [...prevState];
+      let newSum = 0;
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newGrid[i][j].box === box) {
+            newSum += newGrid[i][j].value;
+          }
+        }
+      }
+
+      // Iterates through again setting the boxSum to the sum of values
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newGrid[i][j].box === box) {
+            newGrid[i][j].boxSum = newSum;
+          }
+        }
+      }
+      return newGrid;
+    }),
+
+  clearBoxSum: (box: string) =>
     setGrid((prevState) => {
       const newGrid = [...prevState];
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (newGrid[i][j].box === box) {
-            newGrid[i][j].boxSum = newGrid[i][j].value;
+            newGrid[i][j].boxSum = 0;
+          }
+        }
+      }
+      return newGrid;
+    }),
+  
+
+
+  addToBoxSum: (box: string, value: number) =>
+    setGrid((prevState) => {
+      const newGrid = [...prevState];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newGrid[i][j].box === box) {
+            newGrid[i][j].boxSum += value;
+          }
+        }
+      }
+      return newGrid;
+    }),
+
+  subFromBoxSum: (box: string, value: number) =>
+    setGrid((prevState) => {
+      const newGrid = [...prevState];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newGrid[i][j].box === box) {
+            newGrid[i][j].boxSum -= value;
           }
         }
       }
@@ -106,6 +159,20 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
         for (let j = 0; j < 9; j++) {
           if (newGrid[i][j].box === box) {
             newGrid[i][j].boxDeclaredSum = sum;
+          }
+        }
+      }
+      console.log("newGrid", newGrid);
+      return newGrid;
+    }),
+
+  clearBoxDeclaredSum: (box: string) =>
+    setGrid((prevState) => {
+      const newGrid = [...prevState];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newGrid[i][j].box === box) {
+            newGrid[i][j].boxDeclaredSum = 0;
           }
         }
       }

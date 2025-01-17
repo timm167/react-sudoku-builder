@@ -1,14 +1,13 @@
 
 // Adds a cell to the box being created if conditions are met
 // Used in the Grid component when creatingBox is true
-
 function addCellToBox(cell, state, stateSetters, gridSetters) {
     // Skip if the cell is already part of a box
     if (cell.box !== 'noBox') {return}
 
     // Check if the boxBeingCreated is empty or if the cell is adjacent to it
     if (state.boxBeingCreated.length === 0 || checkIsAdjacent(cell, state)) {
-        
+
         // Clear any currently selected cells
         gridSetters.clearCellIsSelected();
 
@@ -61,7 +60,11 @@ function createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter) 
         type: 'create',
         color: state.currentColorsArray[state.currentColorsArray.length - 1],
         displayCell: cellToDisplay,
+        declaredSum: 0,
     });
+
+    // Set the box sum to the sum of the cells in the box
+    gridSetters.applyBoxSum(boxName);
 
     // Clear the current boxBeingCreated state
     stateSetters.clearBoxBeingCreated();

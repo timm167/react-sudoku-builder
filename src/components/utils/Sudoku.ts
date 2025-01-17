@@ -1,3 +1,5 @@
+// Main file for handling logic related to Sudoku rules and validation
+
 // Helper function to check if the input follows Sudoku rules
 function checkSudoku(e, cell, grid, gridSetters) {
     const colIndex = cell.col;
@@ -65,7 +67,7 @@ function checkSudoku(e, cell, grid, gridSetters) {
         to: 0,
         isIncorrect: true
       });
-      
+
       // Temporarily set the cell value to the incorrect input (Any other action undoes this)
       gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
       return;
@@ -77,11 +79,18 @@ function checkSudoku(e, cell, grid, gridSetters) {
         row: cell.row,
         from: grid[cell.col][cell.row].value,
         to: parseInt(e),
-        isIncorrect: false
+        isIncorrect: false,
+        box: cell.box
     });
+
     stateSetters.setCanValidateInputs(true);
     gridSetters.setCellIsIncorrect(cell.col, cell.row, false);
+
+    // Update the box sum and cell value
+    gridSetters.subFromBoxSum(cell.box, cell.value);
+    gridSetters.addToBoxSum(cell.box, parseInt(e));
     gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
+    
   }
   
   export { validateSudoku };

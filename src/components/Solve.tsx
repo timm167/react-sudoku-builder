@@ -1,14 +1,17 @@
 import React from "react";
-// import { useAppContext } from "../appContext";
+import { useAppContext } from "../appContext";
 import "./css/Solve.css";
 
 export default function Solve() {
+
+    const { state } = useAppContext();
 
     const handleImportClick = () => {
         console.log("Import");
     }
 
     const handleSolveClick = () => {
+        console.log(state.boxActionsList)
         console.log("Solve");
     }
 

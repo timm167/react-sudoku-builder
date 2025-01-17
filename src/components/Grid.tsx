@@ -5,7 +5,7 @@ import React from "react";
 import './css/Grid.css';
 
 // --- Utility Functions ---
-import { Cell } from "./utils/Grid";
+import { Cell } from "../state/initialGrid";
 import { validateSudoku } from "./utils/Sudoku";
 import { addCellToBox } from "./utils/createBox";
 import { deleteBox } from "./utils/deleteBox";
@@ -39,7 +39,7 @@ export default function SudokuGrid() {
 
         // If in delete box mode, delete box
         if (state.deletingBox && cell.box !== 'noBox') {
-            deleteBox(cell.box, state, stateSetters, gridSetters);  // Delete box if in delete mode
+            deleteBox(cell, state, stateSetters, gridSetters);  // Delete box if in delete mode
             return;
         }
 

@@ -1,5 +1,4 @@
 // To do:
-// Beautify my component codebase and component utils below grid.ts (rest done already)
 // Add box logic i.e. the actual math for the killer sudoku
 // set box sums
 // Collect and configure data to be sent to the backend including fixing values
