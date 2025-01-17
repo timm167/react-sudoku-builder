@@ -1,7 +1,20 @@
+// To do:
+// Beautify my component codebase and component utils below grid.ts (rest done already)
+// Add box logic i.e. the actual math for the killer sudoku
+// set box sums
+// Collect and configure data to be sent to the backend including fixing values
+// Create a mock front end receipt of data from the backend and create populateGrid.ts
+// Create a backend with python that will receive the data and send it back
+// Create sql database to store saved puzzles
+// Create a way to save puzzles
+// Create a way to load and play puzzles
+// Configure with Docker
+// Deploy
+
 import React, { useEffect, useRef } from 'react';
 
 // Utility functions or constants
-import { createKeyboardManager } from './app-utils/keyboardManager';
+import { createKeyboardManager } from './utils/keyboardManager';
 
 // Components
 import SudokuGrid from './components/Grid';
@@ -12,27 +25,35 @@ import Solve from './components/Solve';
 // Styles
 import './App.css';
 
-// Import your context hook
+// Import context hook
 import { useAppContext } from './appContext';
 
+// App Component
 function App() {
-  // Access the context
-  const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
 
+  // Initialize context
+  const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
+  
+  // Initialize keyboard manager
+  const keyboardManager = createKeyboardManager(grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs);
+
+
+  // Use effect hook to listen for keyboard events
   useEffect(() => {
+
+    // Allows only numbers to be inputted anywhere in the app
     const keyListener = (e: KeyboardEvent) => {
-      if (!/^\d$/.test(e.key) && !['Backspace'].includes(e.key)) {
-        keyboardManager(e);
-    }};
+      if (!/^\d$/.test(e.key) && !['Backspace'].includes(e.key)) { keyboardManager(e) }
+    };
+    
+    // Add event listener
     window.addEventListener("keydown", keyListener);
 
+    // Cleanup
     return () => {
       window.removeEventListener("keydown", keyListener);
     };
   }, [grid, state, stateSetters, gridSetters]);
-
-  // Initialize keyboard manager
-  const keyboardManager = createKeyboardManager(grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs);
 
   return (
     <>

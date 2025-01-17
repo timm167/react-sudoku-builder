@@ -7,7 +7,7 @@ import { declareBoxSum } from './utils/sumBox';
 
 export default function Killer() {
     const [boxCounter, setBoxCounter] = useState(0);
-    const { grid, state, stateSetters, gridSetters, buttonInputRefs } = useAppContext();
+    const { state, stateSetters, gridSetters, buttonInputRefs } = useAppContext();
 
     // Using this to focus on the input field when the button is clicked
     useEffect (() => {
@@ -15,7 +15,6 @@ export default function Killer() {
             buttonInputRefs.enterSumInput.current.focus();
         }
     }, [state.isRequestingSum]);
-
 
     // Four functions below just handle the various buttons in the killer mode
     // Currently they just update state but they will need to do more later
@@ -38,28 +37,34 @@ export default function Killer() {
         stateSetters.setDeletingBox(false);
         stateSetters.setSettingBoxTotal(false);
         stateSetters.setIsRequestingSum(false);
-        if (state.creatingBox && state.boxBeingCreated.length !== 0) {createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter)}
-        stateSetters.setCreatingBox(!state.creatingBox);
+        if (state.creatingBox && state.boxBeingCreated.length !== 0) {
+            createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter)
+        }
+        if (!state.creatingBox) {
+            stateSetters.setCreatingBox(true);
+        }
+        if (state.creatingBox && state.boxBeingCreated.length === 0) {
+            stateSetters.setCreatingBox(false);
+        }
     }
 
     const handleToggleColorClick = () => {
-        stateSetters.setCurrentColorsArray()
+        stateSetters.cycleCurrentColorsArray()
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const sumInput = (e.target as HTMLFormElement).elements.namedItem('sumInput') as HTMLInputElement;
         const sumValue = parseInt(sumInput.value, 10);
-        console.log('Sum submitted:', sumValue);
         declareBoxSum(sumValue, state, stateSetters, gridSetters);
-        console.log(grid)
         sumInput.value = '';
     };
+
     return (
         <>
         <div className={`${state.isRequestingSum ? '' : 'hidden'} submit-holder`}>
             <form onSubmit={handleSubmit} className='submit-holder'>
-                <input ref={buttonInputRefs.enterSumInput} type="number" name="sumInput" id="sumInput" className='form-input'/>
+                <input ref={buttonInputRefs.enterSumInput} type="number" name="sumInput" id="sumInput" className='form-input' max={405}/>
                 <button ref={buttonInputRefs.enterSumButton} type="submit" className='submit-button'>Enter</button>
             </form>
         </div>

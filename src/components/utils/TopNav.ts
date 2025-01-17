@@ -1,9 +1,59 @@
-function handleKillerUndo() {
-  // ...
+import { clearBox } from "./deleteBox";
+
+function deleteUndo(boxAction, gridSetters){
+    gridSetters.emptyBoxColor(boxAction['boxName']);
+    for (let cell of boxAction['cells']) {
+        clearBox(cell, gridSetters);
+    }
+    
 }
 
-function handleKillerRedo() {
-  // ...
+function handleKillerUndo(state, stateSetters, gridSetters) {
+    console.log(state.boxActionsRedoList)
+  gridSetters.clearCellIsSelected();
+  if (state.boxActionsList.length > 0) {
+      const boxAction = state.boxActionsList[state.boxActionsList.length - 1];
+      stateSetters.appendBoxActionsRedoList(boxAction)
+
+      if (boxAction['type'] === 'create') {
+          deleteUndo(boxAction, gridSetters);
+      }
+
+      if (boxAction['type'] === 'delete') {
+        const boxName = boxAction['boxName'];
+        const cellToDisplay = boxAction['displayCell'];
+        gridSetters.setSpecifiedBoxColor(boxName, boxAction['color']);
+        gridSetters.setIsDisplayingBoxSum(cellToDisplay['col'], cellToDisplay['row'], true);
+          for (let cell of boxAction['cells']) {
+            gridSetters.setCellBox(cell.col, cell.row, boxName);
+          }
+      }
+      stateSetters.popBoxActionsList();
+  }
+}
+
+function handleKillerRedo(state, stateSetters, gridSetters) {
+    console.log(state.boxActionsRedoList)
+    gridSetters.clearCellIsSelected();
+    if (state.boxActionsRedoList.length > 0) {
+        const boxAction = state.boxActionsRedoList[state.boxActionsRedoList.length - 1];
+        stateSetters.appendBoxActionsList(boxAction)
+  
+        if (boxAction['type'] === 'delete') {
+            deleteUndo(boxAction, gridSetters);
+        }
+  
+        if (boxAction['type'] === 'create') {
+          const boxName = boxAction['boxName'];
+          const cellToDisplay = boxAction['displayCell'];
+          gridSetters.setSpecifiedBoxColor(boxName, boxAction['color']);
+          gridSetters.setIsDisplayingBoxSum(cellToDisplay['col'], cellToDisplay['row'], true);
+            for (let cell of boxAction['cells']) {
+              gridSetters.setCellBox(cell.col, cell.row, boxName);
+            }
+        }
+        stateSetters.popBoxActionsRedoList();
+    }
 }
 
 function handleSudokuUndo( state, stateSetters, gridSetters) {
@@ -15,7 +65,7 @@ function handleSudokuUndo( state, stateSetters, gridSetters) {
         itemTwoBack = state.cellActionsList[state.cellActionsList.length - 3];
     } 
     
-    if (state.isValid) { 
+    if (state.canValidateInputs) { 
         if (undoItem.value === 0) {
             stateSetters.setCellActionsRedoList(undoItem['col'], undoItem['row'], 0)
             stateSetters.removeCellActionsList()
@@ -28,7 +78,7 @@ function handleSudokuUndo( state, stateSetters, gridSetters) {
         gridSetters.setCellIsSelected(undoItem['col'], undoItem['row'], false)
         gridSetters.setCellIsIncorrect(undoItem['col'], undoItem['row'], false)
     } else {
-        stateSetters.setIsValid(true);
+        stateSetters.setCanValidateInputs(true);
         stateSetters.removeCellActionsList()
         gridSetters.setCellIsIncorrect(currentItem['col'], currentItem['row'], false)
     }

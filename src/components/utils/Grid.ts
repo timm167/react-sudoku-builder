@@ -1,61 +1,69 @@
-// Helper function to get the cube index
+// Helper function to calculate the cube index based on column and row
+// Cube index is used to group cells into 3x3 sub-grids
 function getCubeIndex(col: number, row: number): number {
-    return Math.floor(col / 3) * 3 + Math.floor(row / 3);
-  }
-
-// Define the Cell interface
-// Not confident in the types but this seems okay. May need to adjust for box logic.
-export interface Cell {
-    id: string;
-    col: any;
-    row: any;
-    cube: number;
-    canFocus: boolean;
-    value: number;
-    isSelected: boolean;
-    isBeingAddedToBox: boolean;
-    isIncorrect: boolean;
-    isDisplayingBoxSum: boolean;
-    box: string;
-    boxSum: number;
-    boxDeclaredSum: number;
-    boxColor: string;
-    isFixed: boolean;
-  }
-  
-// Helper function to initialize a cell
-// This won't be used after creation. Data will be updated as part of state.
-function initializeCell(col: number, row: number): Cell {
-    return {
-        id: `${col}-${row}`, // Unique identifier
-        col: col, // col index
-        row: row, // rowumn index
-        cube: getCubeIndex(col, row), // Cube index
-        canFocus: true, // For graphics purposes
-        value: 0, // Value of the cell (will have to make 0 invisible)
-        isSelected: false, // Helps keyboard navigation, input, and graphics
-        isBeingAddedToBox: false, // Will be useful for graphics
-        isIncorrect: false, // Sets value to wrong when a constraint is violated
-        isDisplayingBoxSum: false, // Will be useful for box constraints 
-        box: 'noBox', // Will be useful for box constraints built later
-        boxSum: 0, // Will be useful for box constraints built later
-        boxDeclaredSum: 0, // Will be useful for box constraints built later
-        boxColor: '', // Will be useful for box constraints built later
-        isFixed: false // Fixes the value for backend or play. Only updates on save or send. NOT NEEDED UNTIL BACKEND BUILDING
-    };
+  return Math.floor(col / 3) * 3 + Math.floor(row / 3);
 }
 
+// Define the Cell interface
+// Represents the structure of a single cell in the grid
+export interface Cell {
+  id: string;                  // Unique identifier for the cell (e.g., "0-0")
+  col: number;                 // Column index of the cell
+  row: number;                 // Row index of the cell
+  cube: number;                // Cube (3x3 sub-grid) index for the cell
+  value: number;               // Value of the cell (0 represents empty)
+  isSelected: boolean;         // Indicates if the cell is currently selected
+  isIncorrect: boolean;        // Indicates if the cell violates a constraint
+  isBeingAddedToBox: boolean;  // Tracks if the cell is being added to a box
+  box: string;                 // Name of the box the cell belongs to (or 'noBox')
+  boxSum: number;              // Calculated sum of the box the cell belongs to
+  boxDeclaredSum: number;      // Declared sum of the box the cell belongs to
+  boxColor: string;            // Colour associated with the box
+  isDisplayingBoxSum: boolean; // Determines if the box sum should be displayed
+  isFixed: boolean;            // Indicates if the cell is fixed (cannot be modified)
+}
 
-// Initialize the grid with cells
-function initializeGrid(): Cell[][] { // Cell[][] is a 2D array of cells that can be accessed by grid[col][rowumn] (the same as in my prototype)
-    const grid: Cell[][] = []; 
-    for (let i = 0; i < 9; i++) {
-      const row: Cell[] = [];
-      for (let j = 0; j < 9; j++) {
-        row.push(initializeCell(i, j)); // This just returns the data for the cell. Cell can be created in the main component function. 
-      }
-      grid.push(row);
+// Helper function to initialise a single cell
+// Creates a new cell with default values based on its column and row
+function initializeCell(col: number, row: number): Cell {
+  return {
+    id: `${col}-${row}`,             // Unique identifier
+    col: col,                        // Column index
+    row: row,                        // Row index
+    cube: getCubeIndex(col, row),    // Cube index (for 3x3 grouping)
+    value: 0,                        // Default empty value (hidden in UI)
+    isSelected: false,               // Tracks if the cell is selected
+    isIncorrect: false,              // Indicates if the cell has an incorrect value
+    isBeingAddedToBox: false,        // Used to show visual feedback during box creation
+    box: 'noBox',                    // Default state, not belonging to any box
+    boxSum: 0,                       // Placeholder for box sum (to be calculated later)
+    boxDeclaredSum: 0,               // Declared sum for box constraints
+    boxColor: '',                    // Placeholder for box colour (set later)
+    isDisplayingBoxSum: false,       // Whether the box sum is displayed in this cell
+    isFixed: false                   // Prevents modification, backend-specific (or during gameplay)
+  };
+}
+
+// Helper function to initialise a 9x9 grid of cells
+// Returns a 2D array of cells, accessible as grid[col][row]
+function initializeGrid(): Cell[][] {
+  const grid: Cell[][] = []; // Initialise the grid as an empty 2D array
+
+  // Iterate over each column (0-8)
+  for (let col = 0; col < 9; col++) {
+
+    // Initialise a new row array for each column
+    const rowArray: Cell[] = []; 
+    for (let row = 0; row < 9; row++) {
+
+      // Add a new cell to the row array
+      rowArray.push(initializeCell(col, row)); 
     }
-    return grid;
+    // Add the completed row to the grid
+    grid.push(rowArray); 
   }
-export { initializeGrid };  // Export the function to initialize the grid
+
+  return grid; // Return the fully initialised 9x9 grid
+}
+
+export { initializeGrid };

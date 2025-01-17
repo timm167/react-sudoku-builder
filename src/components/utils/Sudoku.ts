@@ -40,18 +40,18 @@ function checkSudoku(e, cell, grid, gridSetters) {
 // Helper function to validate the input
 function validateSudoku(e, cell, grid, state, stateSetters, gridSetters ) {
     // Check if the input is a number
-    if (state.isValid === false) {
+    if (state.canValidateInputs === false) {
         const undoItem = state.cellActionsList[state.cellActionsList.length - 1];
         gridSetters.setCellValue(undoItem['col'],undoItem['row'], 0);
         gridSetters.setCellIsIncorrect(undoItem['col'], undoItem['row'], false);
-        stateSetters.setIsValid(true);
+        stateSetters.setCanValidateInputs(true);
         stateSetters.removeCellActionsList();
         return;
     }
     if (!/^\d$/.test(e)) {
-        stateSetters.setIsValid(false);
+        stateSetters.setCanValidateInputs(false);
     } else if (checkSudoku(e, cell, grid, gridSetters) === false) {
-        stateSetters.setIsValid(false);
+        stateSetters.setCanValidateInputs(false);
         stateSetters.setCellActionsList(cell.col, cell.row, 0)
     } else {
         // Adds an empty cell to the cellActionsList if the value is 0 for undo purposes
@@ -59,7 +59,7 @@ function validateSudoku(e, cell, grid, state, stateSetters, gridSetters ) {
             stateSetters.setCellActionsList(cell.col, cell.row, 0);
         }
         stateSetters.setCellActionsList(cell.col, cell.row, parseInt(e));
-        stateSetters.setIsValid(true);
+        stateSetters.setCanValidateInputs(true);
         gridSetters.setCellIsIncorrect(cell.col, cell.row, false);
         gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
     }

@@ -10,9 +10,19 @@
     box-shadow: #0000007c 0px 0px 10px;
   }
 
-.highlight-grid {
+.grid.delete {
+    border: 1px solid #411818;
+    box-shadow: #b32f2f 0px 0px 20px;
+  }
+
+  .grid.create {
     border: 1px solid #2a352c;
-    box-shadow: #d1c237 0px 0px 20px;
+    box-shadow: #e0ae25 0px 0px 20px;
+  }
+
+  .grid.setting{
+    border: 1px solid #2a352c;
+    box-shadow: #ab25e0 0px 0px 20px;
   }
   
   /* Individual cells */

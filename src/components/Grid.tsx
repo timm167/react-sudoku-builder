@@ -4,10 +4,11 @@ import { Cell } from "./utils/Grid";
 import { validateSudoku } from "./utils/Sudoku";
 import { useAppContext } from "../appContext";
 import {addCellToBox }from "./utils/createBox";
+import { deleteBox } from "./utils/deleteBox";
 
 export default function SudokuGrid() {
     // Access context
-    const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
+    const { grid, state, stateSetters, gridSetters, gridInputRefs } = useAppContext();
 
     useEffect(() => {}, [grid]);
 
@@ -20,6 +21,11 @@ export default function SudokuGrid() {
     const handleCellClick = (cell: Cell) => {
         if (state.creatingBox) {
             addCellToBox(cell, state, stateSetters, gridSetters);
+            return;
+        }
+
+        if (state.deletingBox && cell.box !== 'noBox') {
+            deleteBox(cell.box, state, stateSetters, gridSetters);
             return;
         }
 
@@ -42,7 +48,7 @@ export default function SudokuGrid() {
     }
 
     return (
-        <div className={`grid ${state.deletingBox || state.creatingBox ? 'highlight-grid' : ''}`}>
+        <div className={`grid ${state.deletingBox ? 'delete' : ''} ${state.creatingBox  ? 'create' : ''} ${state.settingBoxTotal ? 'setting' : ''}`}>
             {grid.map((col, colIndex) => (
                 <div key={colIndex} className="col">
                     {col.map((cell: Cell, rowIndex) => (

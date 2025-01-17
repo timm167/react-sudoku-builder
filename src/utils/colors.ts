@@ -1,3 +1,5 @@
+// List of transparent colors to be used in the app.
+// The names are not accurate, I might fix them. I might not.
 const transparentcolors = [
     "ice-blue",
     "quartz",

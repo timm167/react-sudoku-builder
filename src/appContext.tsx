@@ -1,11 +1,19 @@
+// Importing React and necessary hooks/types
 import React, { createContext, useContext, useState, useRef, ReactNode, RefObject, MutableRefObject } from 'react';
-import initialState from './app-utils/initialState';
-import { createStateSetters } from './app-utils/stateSetters';
-import { createGridSetters } from './app-utils/gridSetters';
-import { initializeGrid } from "./components/utils/Grid";
 
-// Initialize the grid
-let initialGrid = initializeGrid();
+// Importing utilities, initial states, and helpers
+import initialState from './state/initialState';
+import { createStateSetters } from './state/stateSetters';
+import { createGridSetters } from './state/gridSetters';
+import { initializeGrid } from './components/utils/Grid';
+
+
+// ---------------------------------------------------
+// Initial Setup
+// ---------------------------------------------------
+
+// Initialise the grid
+const initialGrid = initializeGrid();
 
 // Define the types for context value
 interface AppContextType {
@@ -23,9 +31,9 @@ interface AppContextType {
     newBoxButton: RefObject<HTMLButtonElement>;
     toggleColorButton: RefObject<HTMLButtonElement>;
     enterSumButton: RefObject<HTMLButtonElement>;
-    enterSumInput: RefObject<HTMLInputElement>; 
+    enterSumInput: RefObject<HTMLInputElement>;
   };
-  gridInputRefs: MutableRefObject<RefObject<HTMLInputElement>[][]>;  
+  gridInputRefs: MutableRefObject<RefObject<HTMLInputElement>[][]>;
 }
 
 // Default context value
@@ -46,26 +54,39 @@ const defaultContext: AppContextType = {
     enterSumButton: { current: null },
     enterSumInput: { current: null },
   },
-  gridInputRefs: { current: Array.from({ length: 9 }, () =>
-    Array.from({ length: 9 }, () => React.createRef<HTMLInputElement>())
-  ) },
+  gridInputRefs: {
+    current: Array.from({ length: 9 }, () =>
+      Array.from({ length: 9 }, () => React.createRef<HTMLInputElement>())
+    ),
+  },
 };
+
+
+// ---------------------------------------------------
+// Context Creation
+// ---------------------------------------------------
 
 // Create the context with the defined types
 const AppContext = createContext<AppContextType>(defaultContext);
 
-// Custom hook to use context
+// Custom hook to use the context
 export const useAppContext = () => useContext(AppContext);
 
-// Provider component
+
+// ---------------------------------------------------
+// Context Provider Component
+// ---------------------------------------------------
+
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+  // State Management
   const [grid, setGrid] = useState<typeof initialGrid>(initialGrid);
   const [state, setState] = useState<typeof initialState>(initialState);
 
-  // Setters
+  // Create setters
   const stateSetters = createStateSetters(setState);
   const gridSetters = createGridSetters(setGrid, state, stateSetters);
 
+  // Button input references
   const buttonInputRefs = {
     undoButton: useRef<HTMLButtonElement>(null),
     redoButton: useRef<HTMLButtonElement>(null),
@@ -79,24 +100,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     enterSumInput: useRef<HTMLInputElement>(null),
   };
 
+  // Grid input references
   const gridInputRefs = useRef(
     Array.from({ length: 9 }, () =>
       Array.from({ length: 9 }, () => React.createRef<HTMLInputElement>())
     )
-  );  // MutableRefObject for the grid input refs
+  );
 
+  // Context value
   const value = {
     grid,
     state,
     stateSetters,
     gridSetters,
     buttonInputRefs,
-    gridInputRefs
+    gridInputRefs,
   };
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
+  // Provide the context to children
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

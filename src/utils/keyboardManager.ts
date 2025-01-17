@@ -1,4 +1,8 @@
-// Utility function to handle grid navigation
+
+// ---------------------------------------------------
+// Grid navigation using arrow keys
+// ---------------------------------------------------
+
 function navigateGrid(direction, grid, state, stateSetters, gridSetters, inputRefs) {
     const { col, row } = state.selectedCell;
 
@@ -32,26 +36,31 @@ function navigateGrid(direction, grid, state, stateSetters, gridSetters, inputRe
     inputRefs.current[newCol][newRow].current.focus();
 }
 
+
+// ---------------------------------------------------
 // Main function to create the keyboard manager
+// ---------------------------------------------------
+
 export const createKeyboardManager = (grid, state, stateSetters, gridSetters, inputRefs, buttonInputRefs) => {
     return (e) => {
         e.preventDefault();
+
         // Only trigger navigation if there's a selected cell and a relevant arrow key is pressed
         if (state.selectedCell && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
             navigateGrid(e.key, grid, state, stateSetters, gridSetters, inputRefs);
-        } else if (e.key === "X" && (e.ctrlKey || e.metaKey)) {
+        } else if (['x', 'X'].includes(e.key) && (e.ctrlKey || e.metaKey)) {
             buttonInputRefs.redoButton.current.click();
-        } else if (e.key === "Z" && (e.ctrlKey || e.metaKey)) {
+        } else if (['z', 'Z'].includes(e.key) && (e.ctrlKey || e.metaKey)) {
             buttonInputRefs.undoButton.current.click();
         } else if (e.key === "Shift") {
             buttonInputRefs.killerButton.current.click();
-        } else if (state.killerMode && e.key === "C" && (e.ctrlKey || e.metaKey)) {
+        } else if (state.killerMode && ['c', 'C'].includes(e.key) && (e.ctrlKey || e.metaKey)) {
             buttonInputRefs.newBoxButton.current.click();
         } else if (e.key === "Tab") {
             e.preventDefault();
             buttonInputRefs.toggleColorButton.current.click();
         } else if (e.key === "Enter") {
-            buttonInputRefs.EnterSumButton.current.click();
+            buttonInputRefs.enterSumButton.current.click();
         }
     };
 };

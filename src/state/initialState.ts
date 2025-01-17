@@ -1,7 +1,7 @@
 import transparentcolors from "../utils/colors"
 
 const initialState = {
-    isValid: true,
+    canValidateInputs: true,
     deletingBox: false,
     settingBoxTotal: false,
     creatingBox: false,

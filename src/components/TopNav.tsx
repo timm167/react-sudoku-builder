@@ -10,7 +10,7 @@ export default function TopNav() {
     const handleUndoClick = () => { 
         setIsChecked(false);
         if (state.killerMode) {
-            handleKillerUndo()
+            handleKillerUndo(state, stateSetters, gridSetters)
             return;
         }
         // If there are no actions to undo, do nothing
@@ -30,10 +30,10 @@ export default function TopNav() {
         setIsChecked(false);
 
         if (state.killerMode) {
-            handleKillerRedo()
+            handleKillerRedo(state, stateSetters, gridSetters)
             return;
         }
-        if (state.cellActionsRedoList.length === 0 || state.isValid === false) {
+        if (state.cellActionsRedoList.length === 0 || state.canValidateInputs === false) {
             return;
         }
         // Redo the last action
@@ -46,11 +46,21 @@ export default function TopNav() {
     }
 
     const handleSaveClick = () => {
+        console.log(state.boxActionsList)
         handleSave(grid)
     }
 
     const handleKillerClick = () => {
+        if (state.killerMode) {
+            stateSetters.setCanValidateInputs(true)
+        } else {
+            stateSetters.setCanValidateInputs(false)
+        }
         stateSetters.setKillerMode(!state.killerMode);
+        stateSetters.setDeletingBox(false);
+        stateSetters.setSettingBoxTotal(false);
+        stateSetters.setIsRequestingSum(false);
+        stateSetters.setCreatingBox(false);
     }
 
     return (
