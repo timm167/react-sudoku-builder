@@ -1,7 +1,9 @@
 import React, { useState} from "react";
 import { useAppContext } from "../appContext";
 import "./css/TopNav.css";
-import { handleKillerUndo, handleKillerRedo, handleSave, handleSudokuUndo, handleSudokuRedo } from "./utils/TopNav";
+import { handleSave } from "./utils/TopNav";
+import { handleKillerUndo, handleKillerRedo } from "./utils/killerShortcuts";
+import { handleSudokuUndo, handleSudokuRedo } from "./utils/sudokuShortcuts";
 
 export default function TopNav() {
     const [isChecked, setIsChecked] = useState(false);
@@ -18,7 +20,7 @@ export default function TopNav() {
 
         // If there's one action, it is empty so clear it to avoid unnecessary data being stored
         if (state.cellActionsList.length === 1) {
-            stateSetters.removeCellActionsList()
+            stateSetters.popCellActionsList()
             return
         } 
         

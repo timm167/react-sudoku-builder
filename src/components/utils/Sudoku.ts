@@ -1,67 +1,75 @@
 // Helper function to check if the input follows Sudoku rules
-function checkSudoku(e, cell, grid, gridSetters) { 
-    // Get the col, rowumn, cube, and value of the cell
-    let r = cell.col;
-    let c = cell.row;
-    let cubeIndex = cell.cube;
-    let value = parseInt(e);
-    let grid_row = [];
-    let grid_col = [];
-    let grid_cube = [];
-
-    // Get the values of the col, rowumn, and cube to check for duplicates
+function checkSudoku(e, cell, grid, gridSetters) {
+    const colIndex = cell.col;
+    const rowIndex = cell.row;
+    const cubeIndex = cell.cube;
+    const value = parseInt(e);
+    const gridRow = [];
+    const gridCol = [];
+    const gridCube = [];
+  
+    // Collect all values from the column, row, and cube for validation
     for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-            if (grid[i][j].col === r) {
-                grid_col.push(grid[i][j].value);
-            }
-            if (grid[i][j].row === c) {
-                grid_row.push(grid[i][j].value);
-            }
-            if (grid[i][j].cube === cubeIndex) {
-                grid_cube.push(grid[i][j].value);
-            }
-        }
+      for (let j = 0; j < 9; j++) {
+        const currentCell = grid[i][j];
+        if (currentCell.col === colIndex) gridCol.push(currentCell.value);
+        if (currentCell.row === rowIndex) gridRow.push(currentCell.value);
+        if (currentCell.cube === cubeIndex) gridCube.push(currentCell.value);
+      }
     }
-
-    // Check if the value already exists in the col, rowumn, or cube
-    if (grid_row.includes(value) || grid_col.includes(value) || grid_cube.includes(value)){
-        gridSetters.setCellIsIncorrect(r, c, true);
-        return false;
-    } 
-    // else if (cell.inBox && (state.boxes[cell.inBox]['declaredTotal'] !== 0) && ((parseInt(state.boxes[cell.inBox]['sum']) + value) > state.boxes[cell.inBox]['declaredTotal'])) {
-    //     return false;
-    // }
-    else {
-        return true;
+  
+    // Check for duplicates in the row, column, or cube
+    if (gridRow.includes(value) || gridCol.includes(value) || gridCube.includes(value)) {
+      gridSetters.setCellIsIncorrect(colIndex, rowIndex, true);
+      return false;
     }
-}
-
-// Helper function to validate the input
-function validateSudoku(e, cell, grid, state, stateSetters, gridSetters ) {
-    // Check if the input is a number
-    if (state.canValidateInputs === false) {
-        const undoItem = state.cellActionsList[state.cellActionsList.length - 1];
-        gridSetters.setCellValue(undoItem['col'],undoItem['row'], 0);
-        gridSetters.setCellIsIncorrect(undoItem['col'], undoItem['row'], false);
-        stateSetters.setCanValidateInputs(true);
-        stateSetters.removeCellActionsList();
-        return;
+  
+    // Value is valid
+    return true;
+  }
+  
+  // Helper function to validate the input
+  function validateSudoku(e, cell, grid, state, stateSetters, gridSetters) {
+    // If the previous input caused an error, undo that action
+    if (!state.canValidateInputs) {
+      const lastAction = state.cellActionsList[state.cellActionsList.length - 1];
+  
+      // Reset the incorrect cell
+      gridSetters.setCellValue(lastAction.col, lastAction.row, 0);
+      gridSetters.setCellIsIncorrect(lastAction.col, lastAction.row, false);
+  
+      // Allow validation again and update state
+      stateSetters.setCanValidateInputs(true);
+      stateSetters.popCellActionsList();
+      return;
     }
+  
+    // Check if the input is a valid single digit
     if (!/^\d$/.test(e)) {
-        stateSetters.setCanValidateInputs(false);
-    } else if (checkSudoku(e, cell, grid, gridSetters) === false) {
-        stateSetters.setCanValidateInputs(false);
-        stateSetters.setCellActionsList(cell.col, cell.row, 0)
-    } else {
-        // Adds an empty cell to the cellActionsList if the value is 0 for undo purposes
-        if (cell.value === 0) {
-            stateSetters.setCellActionsList(cell.col, cell.row, 0);
-        }
-        stateSetters.setCellActionsList(cell.col, cell.row, parseInt(e));
-        stateSetters.setCanValidateInputs(true);
-        gridSetters.setCellIsIncorrect(cell.col, cell.row, false);
-        gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
+      stateSetters.setCanValidateInputs(false);
+      return;
     }
-}
-export { validateSudoku };
+  
+    // Validate the input using Sudoku rules
+    if (!checkSudoku(e, cell, grid, gridSetters)) {
+      stateSetters.setCanValidateInputs(false);
+  
+      // Log the invalid action with a zero value for undo purposes
+      stateSetters.appendCellActionsList(cell.col, cell.row, 0);
+      return;
+    }
+  
+    // Add an undo entry if the cell was initially empty
+    if (cell.value === 0) {
+      stateSetters.appendCellActionsList(cell.col, cell.row, 0);
+    }
+  
+    // Update state and grid for the valid input
+    stateSetters.appendCellActionsList(cell.col, cell.row, parseInt(e));
+    stateSetters.setCanValidateInputs(true);
+    gridSetters.setCellIsIncorrect(cell.col, cell.row, false);
+    gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
+  }
+  
+  export { validateSudoku };
+  

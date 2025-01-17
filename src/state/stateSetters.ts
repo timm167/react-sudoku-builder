@@ -26,12 +26,6 @@ export const createStateSetters = (setState) => ({
   appendBoxBeingCreated: (value: any) =>
     setState((prevState) => ({ ...prevState, boxBeingCreated: [...prevState.boxBeingCreated, value] })),
 
-  removeFromBoxBeingCreated: () =>
-    setState((prevState) => {
-      let newBoxBeingCreated = prevState.boxBeingCreated.slice(0, -1);
-      return { ...prevState, boxBeingCreated: newBoxBeingCreated };
-    }),
-
   clearBoxBeingCreated: () =>
     setState((prevState) => ({ ...prevState, boxBeingCreated: [] })),
 
@@ -57,25 +51,25 @@ export const createStateSetters = (setState) => ({
   // State Modifiers for undo/redo Cell Actions (i.e. during normal sudoku mode)  
   // ---------------------------------------------------
 
-  setCellActionsList: (col: number, row: number, value: any) =>
+  appendCellActionsList: (col: number, row: number, value: any) =>
     setState((prevState) => ({
       ...prevState,
       cellActionsList: [...prevState.cellActionsList, { col, row, value }],
     })),
 
-  removeCellActionsList: () =>
+  popCellActionsList: () =>
     setState((prevState) => {
       const updatedList = prevState.cellActionsList.slice(0, -1);
       return { ...prevState, cellActionsList: updatedList };
     }),
 
-  setCellActionsRedoList: (col: number, row: number, value: any) =>
+  appendCellActionsRedoList: (col: number, row: number, value: any) =>
     setState((prevState) => ({
       ...prevState,
       cellActionsRedoList: [...prevState.cellActionsRedoList, { col, row, value }],
     })),
 
-  removeCellActionsRedoList: () =>
+  popCellActionsRedoList: () =>
     setState((prevState) => {
       const newArray = [...prevState.cellActionsRedoList];
       newArray.pop();

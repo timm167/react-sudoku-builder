@@ -27,20 +27,20 @@ export interface Cell {
 // Creates a new cell with default values based on its column and row
 function initializeCell(col: number, row: number): Cell {
   return {
-    id: `${col}-${row}`,             // Unique identifier
-    col: col,                        // Column index
-    row: row,                        // Row index
-    cube: getCubeIndex(col, row),    // Cube index (for 3x3 grouping)
-    value: 0,                        // Default empty value (hidden in UI)
-    isSelected: false,               // Tracks if the cell is selected
-    isIncorrect: false,              // Indicates if the cell has an incorrect value
-    isBeingAddedToBox: false,        // Used to show visual feedback during box creation
-    box: 'noBox',                    // Default state, not belonging to any box
-    boxSum: 0,                       // Placeholder for box sum (to be calculated later)
-    boxDeclaredSum: 0,               // Declared sum for box constraints
-    boxColor: '',                    // Placeholder for box colour (set later)
-    isDisplayingBoxSum: false,       // Whether the box sum is displayed in this cell
-    isFixed: false                   // Prevents modification, backend-specific (or during gameplay)
+    id: `${col}-${row}`,             
+    col: col,                        
+    row: row,                        
+    cube: getCubeIndex(col, row),    
+    value: 0,                        
+    isSelected: false,               
+    isIncorrect: false,              
+    isBeingAddedToBox: false,        
+    box: 'noBox',                    
+    boxSum: 0,                       
+    boxDeclaredSum: 0,               
+    boxColor: '',                    
+    isDisplayingBoxSum: false,      
+    isFixed: false                   
   };
 }
 

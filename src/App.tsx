@@ -1,9 +1,13 @@
 // To do:
 // Beautify my component codebase and component utils below grid.ts (rest done already)
+// Make undo/redo in normal mode simpler by storing whole grid state
+// Add type declarations to action lists
 // Add box logic i.e. the actual math for the killer sudoku
 // set box sums
 // Collect and configure data to be sent to the backend including fixing values
 // Create a mock front end receipt of data from the backend and create populateGrid.ts
+// Set up venv and install dependencies
+// Simple flask backend with RESTful API
 // Create a backend with python that will receive the data and send it back
 // Create sql database to store saved puzzles
 // Create a way to save puzzles
@@ -11,7 +15,7 @@
 // Configure with Docker
 // Deploy
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 // Utility functions or constants
 import { createKeyboardManager } from './utils/keyboardManager';
