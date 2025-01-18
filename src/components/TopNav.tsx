@@ -65,7 +65,7 @@ export default function TopNav() {
     // Handle save button click
     const handleSaveClick = () => {
         gridSetters.clearGridIsHavingBoxCreated();
-        handleSave(grid);
+        handleSave(grid, state);
     }
 
     // Handle Killer Mode toggle

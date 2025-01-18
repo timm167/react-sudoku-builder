@@ -1,5 +1,5 @@
 // --- External Dependencies ---
-import React, { useEffect } from "react";
+import React from "react";
 
 // --- CSS Styles ---
 import './css/Grid.css';
@@ -9,7 +9,6 @@ import { Cell } from "../state/initialGrid";
 import { validateSudoku } from "./utils/Sudoku";
 import { addCellToBox } from "./utils/createBox";
 import { deleteBox } from "./utils/deleteBox";
-import { checkBoxSumIsValid } from "./utils/boxSumLogic";
 
 // --- Context ---
 import { useAppContext } from "../appContext";
@@ -20,12 +19,6 @@ export default function SudokuGrid() {
 
     // Access Context
     const { grid, state, stateSetters, gridSetters, gridInputRefs } = useAppContext();
-
-    useEffect(() => {
-        if (checkBoxSumIsValid(grid)) {
-            stateSetters.setBoxSumIsIncorrect(false);
-        } 
-    }, [grid]);
 
     // --- Handle cell change ---
     // Function to manage cell value changes and trigger Sudoku validation

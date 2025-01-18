@@ -7,6 +7,7 @@ import { deleteShortcut } from './TopNav';
 // Handle undo for Killer Sudoku box-related actions
 function handleKillerUndo(grid, state, stateSetters, gridSetters) {
     gridSetters.clearCellIsSelected();
+    stateSetters.setBoxSumIsIncorrect(false);
   
     // Check if there are actions to undo
     if (state.boxActionsList.length > 0) {

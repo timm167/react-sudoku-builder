@@ -6,6 +6,7 @@
 
 // Handle undo for Sudoku cell-related actions
 function handleSudokuUndo(state, stateSetters, gridSetters) {
+  stateSetters.setBoxSumIsIncorrect(false);
   if (state.cellActionsList.length === 0) {return}
 
   // Retrieve the most recent undo action

@@ -71,8 +71,7 @@ export default function Killer() {
         e.preventDefault();
         gridSetters.clearGridIsHavingBoxCreated();
         if (!checkBoxSumIsValid(grid)) {
-            stateSetters.setBoxSumIsIncorrect(true);
-            alert('Box Sum cannot be higher than the the sum of its cells');
+            alert('Box sum is incorrect');
             return;
         }
         stateSetters.setBoxSumIsIncorrect(false);

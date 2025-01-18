@@ -1,4 +1,4 @@
-import { checkBoxSumIsValid } from "./boxSumLogic";
+import { checkIsValidAddition } from "./boxSumLogic";
 
 // Main file for handling logic related to Sudoku rules and validation
 
@@ -37,8 +37,13 @@ function checkSudoku(e, cell, grid, gridSetters) {
   // Helper function to validate the input
   function validateSudoku(e, cell, grid, state, stateSetters, gridSetters) {
     
+    if (state.killerMode){
+        return
+    }
+    
     // If the previous input caused an error, undo that action
     if (!state.canValidateInputs) {
+        console.log("validateSudoku: undoing last action");
       const lastAction = state.cellActionsList[state.cellActionsList.length - 1];
   
       // Reset the incorrect cell
@@ -79,7 +84,7 @@ function checkSudoku(e, cell, grid, gridSetters) {
     }
 
     // Check if the box sum is invalid
-    if (!checkBoxSumIsValid(grid)) {
+    if (!checkIsValidAddition(cell, parseInt(e))) {
       stateSetters.setCanValidateInputs(false);
       gridSetters.setCellIsIncorrect(cell.col, cell.row, true);
       stateSetters.setBoxSumIsIncorrect(true);
