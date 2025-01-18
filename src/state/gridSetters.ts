@@ -81,6 +81,18 @@ export const createGridSetters = (setGrid, state, stateSetters) => ({
       return newGrid;
     }),
 
+  clearGridIsHavingBoxCreated: () =>
+    setGrid((prevState) => {
+      const newGrid = [...prevState];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          newGrid[i][j].isBeingAddedToBox = false;
+        }
+      }
+      stateSetters.clearBoxBeingCreated();
+      return newGrid;
+    }),
+
     
   // ---------------------------------------------------
   // State Modifiers for Box Sum and Declaration

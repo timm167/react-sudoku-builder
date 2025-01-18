@@ -1,5 +1,5 @@
 // --- External Dependencies ---
-import React from "react";
+import React, { useEffect } from "react";
 
 // --- CSS Styles ---
 import './css/Grid.css';
@@ -9,15 +9,23 @@ import { Cell } from "../state/initialGrid";
 import { validateSudoku } from "./utils/Sudoku";
 import { addCellToBox } from "./utils/createBox";
 import { deleteBox } from "./utils/deleteBox";
+import { checkBoxSumIsValid } from "./utils/boxSumLogic";
 
 // --- Context ---
 import { useAppContext } from "../appContext";
 
 // --- Grid Component ---
 export default function SudokuGrid() {
+    
 
     // Access Context
     const { grid, state, stateSetters, gridSetters, gridInputRefs } = useAppContext();
+
+    useEffect(() => {
+        if (checkBoxSumIsValid(grid)) {
+            stateSetters.setBoxSumIsIncorrect(false);
+        } 
+    }, [grid]);
 
     // --- Handle cell change ---
     // Function to manage cell value changes and trigger Sudoku validation
@@ -69,10 +77,15 @@ export default function SudokuGrid() {
 
     // --- JSX Return ---
     return (
+        <div className="inner-grid-holder">
+            <h4 className={`${state.boxSumIsIncorrect ? 'alert' : 'hidden'}`}>
+                Box Sum Error
+            </h4>
         <div 
             className={`grid ${state.deletingBox ? 'delete' : ''} 
                     ${state.creatingBox ? 'create' : ''} 
-                    ${state.settingBoxTotal ? 'setting' : ''}`}>
+                    ${state.settingBoxTotal ? 'setting' : ''}
+                    ${state.boxSumIsIncorrect ? 'delete' : ''}`}>
 
             {/* Column Mapping: Iterating over each column */}
             {grid.map((col, colIndex) => (
@@ -108,6 +121,7 @@ export default function SudokuGrid() {
             ))}
             {/* End Column Mapping */}
 
+        </div>
         </div>
     );
 }

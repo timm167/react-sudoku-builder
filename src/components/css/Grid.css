@@ -10,6 +10,17 @@
     box-shadow: #0000007c 0px 0px 10px;
   }
 
+.inner-grid-holder {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+h4 {
+  margin-top: 0px;
+}
+
 .grid.delete {
     border: 1px solid #411818;
     box-shadow: #b32f2f 0px 0px 20px;
@@ -119,4 +130,14 @@
 
   .cell.box-highlight {
     border: 2px solid rgba(0, 0, 0, 0.831)
+  }
+
+  .alert {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    background-color: #791313;
+    border-radius: 18px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
   }

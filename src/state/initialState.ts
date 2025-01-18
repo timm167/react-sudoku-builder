@@ -30,6 +30,7 @@ type InitialState = {
   boxBeingCreated: string[]; // List of cells in the box being created
   boxActionsList: BoxAction[]; // List of actions performed on boxes
   boxActionsRedoList: BoxAction[]; // List of redoable actions for boxes
+  boxSumIsIncorrect: boolean; // Indicates if the box
   isRequestingSum: boolean; // Tracks if the user is requesting a sum display
   selectedCell: SelectedCell; // Currently selected cell in the grid
   killerMode: boolean; // Indicates if killer Sudoku mode is active
@@ -48,6 +49,7 @@ const initialState: InitialState = {
   boxBeingCreated: [], // No cells assigned to a box yet
   boxActionsList: [], // No box actions performed initially
   boxActionsRedoList: [], // No redoable box actions initially
+  boxSumIsIncorrect: false, // The box sum is initially correct
   isRequestingSum: false, // Not requesting a sum display
   selectedCell: null, // No cell selected at the start
   killerMode: false, // Killer Sudoku mode is inactive

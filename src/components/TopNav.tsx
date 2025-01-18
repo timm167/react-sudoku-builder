@@ -23,6 +23,7 @@ export default function TopNav() {
     // --- Handlers ---
     // Handle undo button click
     const handleUndoClick = () => { 
+        gridSetters.clearGridIsHavingBoxCreated();
         setIsChecked(false);
         if (state.killerMode) {
             handleKillerUndo(grid, state, stateSetters, gridSetters);
@@ -38,6 +39,7 @@ export default function TopNav() {
 
     // Handle redo button click
     const handleRedoClick = () => {
+        gridSetters.clearGridIsHavingBoxCreated();
         setIsChecked(false);
 
         if (state.killerMode) {
@@ -62,11 +64,13 @@ export default function TopNav() {
 
     // Handle save button click
     const handleSaveClick = () => {
+        gridSetters.clearGridIsHavingBoxCreated();
         handleSave(grid);
     }
 
     // Handle Killer Mode toggle
     const handleKillerClick = () => {
+        gridSetters.clearGridIsHavingBoxCreated();
         if (state.killerMode) {
             stateSetters.setCanValidateInputs(true);
         } else {

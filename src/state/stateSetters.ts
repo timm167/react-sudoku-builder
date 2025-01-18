@@ -18,6 +18,8 @@ export const createStateSetters = (setState) => ({
   setSettingBoxTotal: (value: boolean) =>
     setState((prevState) => ({ ...prevState, settingBoxTotal: value })),
 
+  setBoxSumIsIncorrect: (value: boolean) =>
+    setState((prevState) => ({ ...prevState, boxSumIsIncorrect: value })),
 
   // ---------------------------------------------------
   // State Modifiers for creating and deleting boxes
@@ -29,6 +31,11 @@ export const createStateSetters = (setState) => ({
   clearBoxBeingCreated: () =>
     setState((prevState) => ({ ...prevState, boxBeingCreated: [] })),
 
+  removeFromBoxBeingCreated: (col: number, row: number) =>
+    setState((prevState) => {
+      let newBoxBeingCreated = prevState.boxBeingCreated.filter((cell) => cell.col !== col || cell.row !== row);
+      return { ...prevState, boxBeingCreated: newBoxBeingCreated };
+    }),
 
   // ---------------------------------------------------
   // State Modifiers for Killer Mode, Cell, and Box Status

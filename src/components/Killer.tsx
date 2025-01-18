@@ -9,14 +9,14 @@ import './css/Killer.css';
 
 // --- Utility Functions ---
 import { createBox } from './utils/createBox';
-import { declareBoxSum } from './utils/sumBox';
+import { checkBoxSumIsValid, declareBoxSum } from './utils/boxSumLogic';
 
 // --- Killer Component ---
 export default function Killer() {
     
     // --- State Management ---
     const [boxCounter, setBoxCounter] = useState(0);
-    const { state, stateSetters, gridSetters, buttonInputRefs } = useAppContext();
+    const { grid, state, stateSetters, gridSetters, buttonInputRefs } = useAppContext();
 
     // --- Side Effects ---
     // Focus on the input field when sum input is requested
@@ -29,6 +29,7 @@ export default function Killer() {
     // --- Button Handlers ---
     // Handle Delete Box button click
     const handleDeleteBoxClick = () => {
+        gridSetters.clearGridIsHavingBoxCreated();
         stateSetters.setCreatingBox(false);
         stateSetters.setSettingBoxTotal(false);
         stateSetters.setIsRequestingSum(false);
@@ -37,6 +38,7 @@ export default function Killer() {
 
     // Handle Set Box Sum button click
     const handleapplyBoxSumClick = () => {
+        gridSetters.clearGridIsHavingBoxCreated();
         stateSetters.setCreatingBox(false);
         stateSetters.setDeletingBox(false);
         stateSetters.setIsRequestingSum(false);
@@ -67,6 +69,13 @@ export default function Killer() {
     // Handle form submission for box sum declaration
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        gridSetters.clearGridIsHavingBoxCreated();
+        if (!checkBoxSumIsValid(grid)) {
+            stateSetters.setBoxSumIsIncorrect(true);
+            alert('Box Sum cannot be higher than the the sum of its cells');
+            return;
+        }
+        stateSetters.setBoxSumIsIncorrect(false);
         const sumInput = (e.target as HTMLFormElement).elements.namedItem('sumInput') as HTMLInputElement;
         const sumValue = parseInt(sumInput.value, 10);
         declareBoxSum(sumValue, state, stateSetters, gridSetters);

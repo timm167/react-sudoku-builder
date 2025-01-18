@@ -5,6 +5,20 @@ function addCellToBox(cell, state, stateSetters, gridSetters) {
     // Skip if the cell is already part of a box
     if (cell.box !== 'noBox') {return}
 
+    // Check if the cell is already being added to the box
+    // If so, undo the most recent addition
+    if (cell.isBeingAddedToBox) {
+
+        let cellToRemove = state.boxBeingCreated[state.boxBeingCreated.length - 1]
+
+        gridSetters.setIsBeingAddedToBox(cellToRemove.col, cellToRemove.row, false);  // Remove the highlight
+
+        // Remove the cell from the box being created
+        stateSetters.removeFromBoxBeingCreated(cellToRemove.col, cellToRemove.row);
+
+        return;
+    }
+
     // Check if the boxBeingCreated is empty or if the cell is adjacent to it
     if (state.boxBeingCreated.length === 0 || checkIsAdjacent(cell, state)) {
 

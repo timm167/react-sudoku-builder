@@ -11,13 +11,16 @@ function handleKillerUndo(grid, state, stateSetters, gridSetters) {
     // Check if there are actions to undo
     if (state.boxActionsList.length > 0) {
       const boxAction = state.boxActionsList[state.boxActionsList.length - 1];
-      console.log("boxAction", boxAction);
-      console.log("boxActionDecl", boxAction['declaredSum']);
 
       // Save the declared sum for redo as this is not necessarily stored when the box is created
-      let boxActionWithDeclaredSum = boxAction;
-      boxActionWithDeclaredSum['declaredSum'] = grid[boxAction['cells'][0].col][boxAction['cells'][0].row].boxDeclaredSum;
-      stateSetters.appendBoxActionsRedoList(boxActionWithDeclaredSum);
+      if( boxAction['declaredSum'] === 0 ) {
+        // If there's no declared sum, get it from the first cell in the box
+        let boxActionWithDeclaredSum = boxAction;
+        boxActionWithDeclaredSum['declaredSum'] = grid[boxAction['cells'][0].col][boxAction['cells'][0].row].boxDeclaredSum;
+        stateSetters.appendBoxActionsRedoList(boxActionWithDeclaredSum);
+      } else {
+        stateSetters.appendBoxActionsRedoList(boxAction);
+      }
   
       // Undo box creation by deleting it
       if (boxAction['type'] === 'create') {

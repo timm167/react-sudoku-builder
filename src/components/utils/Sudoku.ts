@@ -1,3 +1,5 @@
+import { checkBoxSumIsValid } from "./boxSumLogic";
+
 // Main file for handling logic related to Sudoku rules and validation
 
 // Helper function to check if the input follows Sudoku rules
@@ -42,7 +44,10 @@ function checkSudoku(e, cell, grid, gridSetters) {
       // Reset the incorrect cell
       gridSetters.setCellValue(lastAction.col, lastAction.row, 0);
       gridSetters.setCellIsIncorrect(lastAction.col, lastAction.row, false);
-  
+
+      // Reset the box state
+      stateSetters.setBoxSumIsIncorrect(false);
+
       // Allow validation again and update state
       stateSetters.setCanValidateInputs(true);
       stateSetters.popCellActionsList();
@@ -71,6 +76,26 @@ function checkSudoku(e, cell, grid, gridSetters) {
       // Temporarily set the cell value to the incorrect input (Any other action undoes this)
       gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
       return;
+    }
+
+    // Check if the box sum is invalid
+    if (!checkBoxSumIsValid(grid)) {
+      stateSetters.setCanValidateInputs(false);
+      gridSetters.setCellIsIncorrect(cell.col, cell.row, true);
+      stateSetters.setBoxSumIsIncorrect(true);
+
+    // Log the incorrect input for potential undo
+    stateSetters.appendCellActionsList({
+        col: cell.col,
+        row: cell.row,
+        from: grid[cell.col][cell.row].value,
+        to: 0,
+        isIncorrect: true
+    });
+
+    // Temporarily set the cell value to the incorrect input (Any other action undoes this)
+    gridSetters.setCellValue(cell.col, cell.row, parseInt(e));
+    return;
     }
 
     // Update state and grid for the valid input

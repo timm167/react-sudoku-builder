@@ -1,4 +1,5 @@
 // To do:
+// Use effect to check box logic and undo box actions
 // Add box logic i.e. the actual math for the killer sudoku
 // set box sums
 // Collect and configure data to be sent to the backend including fixing values
