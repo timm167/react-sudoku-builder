@@ -1,18 +1,28 @@
 import React from "react";
 import { useAppContext } from "../appContext";
 import "./css/Solve.css";
+import { fetchSolution } from "../server-utils/fetch";
 
 export default function Solve() {
 
-    const { state } = useAppContext();
+    const { grid, gridSetters, stateSetters } = useAppContext();
 
     const handleImportClick = () => {
         console.log("Import");
     }
 
     const handleSolveClick = () => {
-        console.log(state.boxActionsList)
-        console.log("Solve");
+        let fetchGrid = grid
+
+        // Set the fixed values in the grid
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (fetchGrid[i][j].value !== 0) {
+                    fetchGrid[i][j].isFixed = true;
+                }
+            }
+        }
+        fetchSolution(fetchGrid, gridSetters, stateSetters);
     }
 
     return (
