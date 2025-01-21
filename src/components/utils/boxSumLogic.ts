@@ -1,23 +1,37 @@
-function checkBoxSumIsValid(grid) {
+function checkBoxSumIsValid(val, grid, state) {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (grid[i][j].boxSum !== 0 && grid[i][j].boxSum > grid[i][j].boxDeclaredSum) {
-                return false;
-            }
-            if (checkIfBoxFull(grid[i][j], grid) && grid[i][j].boxSum !== grid[i][j].boxDeclaredSum) {
-                return false;
+            let cell = grid[i][j];
+            if (state.boxBeingDeclared === cell.box && cell.boxSum !== 0) {
+                if (cell.boxSum > val) {
+                    console.log('box sum is too high')
+                    return false;
+                }
+                if (checkAddOrFull(cell)) {
+                    console.log('box sum is not full')
+                    return false;
+                }
             }
         }
     }
     return true;
 }
 
-function checkIsValidAddition(cell, value) {
+function checkAddOrFull(cell) {
+    for (let item of cell.boxCells) {
+        if (item.value !== 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function checkIsValidAddition(cell, value, grid) {
     if (cell.boxDeclaredSum === 0) {
         return true;
     }
 
-    if (checkIfBoxFull(cell, cell.grid)) {
+    if (checkIfBoxFull(cell, grid)) {
         if (cell.boxSum + value !== cell.boxDeclaredSum) {
             return false;
         }
@@ -34,7 +48,8 @@ function checkIfBoxFull(cell, grid) {
     const box = cell.box;
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (grid[i][j].box === box && grid[i][j].value === 0) {
+            if (grid[i][j].box === box && grid[i][j].value === 0 && grid[i][j] !== cell) {
+                console.log('box is not full')  
                 return false;
             }
         }

@@ -4,7 +4,7 @@ import sys
 import traceback
 import logging
 from backend.sudoku import solve_sudoku
-
+import json
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -19,14 +19,13 @@ CORS(app)
 # This function just tests the API is working
 def handle_sudoku(fetched_grid):
 
-    print(fetched_grid)
-
     solvable, ways, solvedGrid = solve_sudoku(fetched_grid)
-    return
+    return solvable, ways, solvedGrid
 
 @app.route('/solve', methods=['POST']) # This endpoint receives a POST request
 def solve():
     try:
+        print("Received a request to solve a sudoku")
         # Extract the grid from the incoming JSON data
         data = request.get_json()
         fetched_grid = data.get('grid')  # grid is expected to be an array of arrays

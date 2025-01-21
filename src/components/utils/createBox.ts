@@ -29,7 +29,7 @@ function addCellToBox(cell, state, stateSetters, gridSetters) {
         gridSetters.setIsBeingAddedToBox(cell.col, cell.row, true);
 
         // Append the cell to the current box being created
-        stateSetters.appendBoxBeingCreated({ col: cell.col, row: cell.row });
+        stateSetters.appendBoxBeingCreated({ col: cell.col, row: cell.row, value: cell.value });
     }
 }
 
@@ -55,6 +55,7 @@ function createBox(state, stateSetters, gridSetters, boxCounter, setBoxCounter) 
 
         // 2. Assign the box name and reset the isBeingAddedToBox state
         gridSetters.setCellBox(cell.col, cell.row, boxName);
+        gridSetters.setBoxCells(cell.col, cell.row, state.boxBeingCreated);
         gridSetters.setIsBeingAddedToBox(cell.col, cell.row, false);
     }
 

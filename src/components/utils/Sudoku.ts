@@ -35,15 +35,14 @@ function checkSudoku(e, cell, grid, gridSetters) {
   }
   
   // Helper function to validate the input
-  function validateSudoku(e, cell, grid, state, stateSetters, gridSetters) {
-    
+  function validateSudoku(e, cell, grid, state, stateSetters, gridSetters, buttonInputRefs) {
     if (state.killerMode){
-        return
+        buttonInputRefs.killerButton.current.click();
+        return;
     }
-    
+
     // If the previous input caused an error, undo that action
     if (!state.canValidateInputs) {
-        console.log("validateSudoku: undoing last action");
       const lastAction = state.cellActionsList[state.cellActionsList.length - 1];
   
       // Reset the incorrect cell
@@ -59,6 +58,21 @@ function checkSudoku(e, cell, grid, gridSetters) {
       return;
     }
   
+    if (e === '0' || e.key === "Backspace") {
+      console.log('backspace')
+
+      stateSetters.setCanValidateInputs(true);
+      stateSetters.appendCellActionsList({
+        col: cell.col,
+        row: cell.row,
+        from: grid[cell.col][cell.row].value,
+        to: 0,
+        isIncorrect: false
+      });
+      gridSetters.subFromBoxSum(cell.box, cell.value);
+      gridSetters.setCellValue(cell.col, cell.row, 0);
+      return;
+    }
     // Check if the input is a valid single digit
     if (!/^\d$/.test(e)) {
       stateSetters.setCanValidateInputs(false);
@@ -84,7 +98,7 @@ function checkSudoku(e, cell, grid, gridSetters) {
     }
 
     // Check if the box sum is invalid
-    if (!checkIsValidAddition(cell, parseInt(e))) {
+    if (!checkIsValidAddition(cell, parseInt(e), grid)) {
       stateSetters.setCanValidateInputs(false);
       gridSetters.setCellIsIncorrect(cell.col, cell.row, true);
       stateSetters.setBoxSumIsIncorrect(true);

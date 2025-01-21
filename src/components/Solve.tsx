@@ -2,27 +2,41 @@ import React from "react";
 import { useAppContext } from "../appContext";
 import "./css/Solve.css";
 import { fetchSolution } from "../server-utils/fetch";
+import { getEmptyBoxCells, applyBoxSizes, applyBoxCellValues } from "../server-utils/send";
+import  {dummyGrid, expertGrid } from "../server-utils/populate";
 
 export default function Solve() {
 
     const { grid, gridSetters, stateSetters } = useAppContext();
 
     const handleImportClick = () => {
-        console.log("Import");
+        gridSetters.populateGrid(expertGrid);
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                gridSetters.clearBoxSum(grid[i][j]['box']);
+            }
+        }
     }
 
     const handleSolveClick = () => {
-        let fetchGrid = grid
+        console.log(grid)
+        let copyGrid = grid
+
+        applyBoxSizes(copyGrid);
+
+        applyBoxCellValues(copyGrid);
 
         // Set the fixed values in the grid
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
-                if (fetchGrid[i][j].value !== 0) {
-                    fetchGrid[i][j].isFixed = true;
+                if (copyGrid[i][j].value !== 0) {
+                    copyGrid[i][j].isFixed = true;
                 }
             }
         }
-        fetchSolution(fetchGrid, gridSetters, stateSetters);
+        const fetchGrid = getEmptyBoxCells(copyGrid);
+        console.log(fetchGrid)
+        fetchSolution(fetchGrid, gridSetters);
     }
 
     return (

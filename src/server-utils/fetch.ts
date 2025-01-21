@@ -2,7 +2,8 @@
 // This will be used to fetch the data from the backend
 // ---------------------------------------------------
 
-const fetchSolution = async (grid, gridSetters, stateSetters) => {
+const fetchSolution = async (grid, gridSetters) => {
+    console.log(grid)
     try {
         const response = await fetch(`http://127.0.0.1:5000/solve`, {
             method: 'POST',
@@ -14,9 +15,9 @@ const fetchSolution = async (grid, gridSetters, stateSetters) => {
             const result = await response.json();
             alert(`Solvable: ${result.solvable}, Ways: ${result.ways}`);
             // Update state or UI with the result
-            const newGrid = result.grid;
+            const newGrid = result.solvedGrid;
             console.log(newGrid);
-            // populateGrid();
+            gridSetters.populateGrid(newGrid);
 
         } else {
             alert('Failed to connect to server.');

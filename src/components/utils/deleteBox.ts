@@ -22,9 +22,6 @@ function deleteBox(cell, state, stateSetters, gridSetters) {
             // Remove the colour from the box
             gridSetters.emptyBoxColor(box);
 
-            console.log(cell['boxDeclaredSum']);
-            console.log(state.boxActionsList);
-
             // Reset the declared box sum to 0 and clear box sum
             gridSetters.clearBoxDeclaredSum(box);
             gridSetters.clearBoxSum(box);
@@ -42,7 +39,6 @@ function deleteBox(cell, state, stateSetters, gridSetters) {
 
 // Clears all properties of a single cell related to its box
 function clearBox(cell, gridSetters) {
-    console.log("clearBox");
 
     // Reset the box name to keep data consistent
     gridSetters.setCellBox(cell.col, cell.row, 'noBox');

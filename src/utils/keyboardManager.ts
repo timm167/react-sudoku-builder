@@ -1,3 +1,4 @@
+import { validateSudoku } from '../components/utils/Sudoku';
 
 // ---------------------------------------------------
 // Grid navigation using arrow keys
@@ -43,8 +44,17 @@ function navigateGrid(direction, grid, state, stateSetters, gridSetters, inputRe
 
 export const createKeyboardManager = (grid, state, stateSetters, gridSetters, inputRefs, buttonInputRefs) => {
     return (e) => {
-        e.preventDefault();
 
+        if (e.key !== "Backspace" || !state.killerMode) {
+            e.preventDefault();
+        }
+        
+        if (e.key === "Backspace") {
+            const {col, row} = state.selectedCell
+            const activeCell = grid[col][row]
+            validateSudoku('0', activeCell, grid, state, stateSetters, gridSetters, buttonInputRefs)
+
+        }
         // Only trigger navigation if there's a selected cell and a relevant arrow key is pressed
         if (state.selectedCell && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
             navigateGrid(e.key, grid, state, stateSetters, gridSetters, inputRefs);

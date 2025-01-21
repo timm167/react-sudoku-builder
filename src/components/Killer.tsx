@@ -69,14 +69,15 @@ export default function Killer() {
     // Handle form submission for box sum declaration
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const sumInput = (e.target as HTMLFormElement).elements.namedItem('sumInput') as HTMLInputElement;
+        const sumValue = parseInt(sumInput.value, 10);
         gridSetters.clearGridIsHavingBoxCreated();
-        if (!checkBoxSumIsValid(grid)) {
+        if (!checkBoxSumIsValid(sumValue, grid, state)) {
             alert('Box sum is incorrect');
             return;
         }
         stateSetters.setBoxSumIsIncorrect(false);
-        const sumInput = (e.target as HTMLFormElement).elements.namedItem('sumInput') as HTMLInputElement;
-        const sumValue = parseInt(sumInput.value, 10);
+
         declareBoxSum(sumValue, state, stateSetters, gridSetters);
         sumInput.value = '';
     };

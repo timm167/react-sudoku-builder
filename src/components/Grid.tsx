@@ -18,14 +18,14 @@ export default function SudokuGrid() {
     
 
     // Access Context
-    const { grid, state, stateSetters, gridSetters, gridInputRefs } = useAppContext();
+    const { grid, state, stateSetters, gridSetters, gridInputRefs, buttonInputRefs } = useAppContext();
 
     // --- Handle cell change ---
     // Function to manage cell value changes and trigger Sudoku validation
     const handleCellChange = (e: React.ChangeEvent<HTMLInputElement>, cell: Cell) => {
         stateSetters.clearCellActionsRedoList();  // Clear redo list when a new action is made
         let inputValue = e.target.value.slice(-1);  // Get the last character entered
-        validateSudoku(inputValue, cell, grid, state, stateSetters, gridSetters);  // Validate the input
+        validateSudoku(inputValue, cell, grid, state, stateSetters, gridSetters, buttonInputRefs);  // Validate the input
     }
 
     // --- Handle cell click ---

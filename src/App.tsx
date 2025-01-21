@@ -44,7 +44,7 @@ function App() {
 
     // Allows only numbers to be inputted anywhere in the app
     const keyListener = (e: KeyboardEvent) => {
-      if (!/^\d$/.test(e.key) && !['Backspace'].includes(e.key)) { keyboardManager(e) }
+      if (!/^\d$/.test(e.key)) { keyboardManager(e) }
     };
     
     // Add event listener

@@ -18,8 +18,11 @@ export interface Cell {
   boxSum: number;              // Calculated sum of the box the cell belongs to
   boxDeclaredSum: number;      // Declared sum of the box the cell belongs to
   boxColor: string;            // Colour associated with the box
+  boxSize: number;             // Number of cells in the box
   isDisplayingBoxSum: boolean; // Determines if the box sum should be displayed
-  isFixed: boolean;            // Indicates if the cell is fixed (cannot be modified)
+  isFixed: boolean;            // Indicates if the cell is fixed (cannot be modified) (backend use only)
+  unfilledBoxCells: number;    // Number of cells in the box that are not filled (backend use only)
+  boxCells: { col: number; row: number }[]; // Array of cells in the box (backend use only)
 }
 
 // Helper function to initialise a single cell
@@ -37,9 +40,12 @@ function initializeCell(col: number, row: number): Cell {
     box: 'noBox',                    
     boxSum: 0,                       
     boxDeclaredSum: 0,               
-    boxColor: '',                    
+    boxColor: '',
+    boxSize: 0,                    
     isDisplayingBoxSum: false,      
-    isFixed: false                   
+    isFixed: false,       
+    unfilledBoxCells: 0,         
+    boxCells: []   
   };
 }
 

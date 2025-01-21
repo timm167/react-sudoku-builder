@@ -1,4 +1,4 @@
-import { deleteShortcut } from './TopNav';
+import { createBoxShortcut, deleteBoxShortcut } from './navUtils';
 
 // ------------------ 
 // Undo
@@ -25,24 +25,12 @@ function handleKillerUndo(grid, state, stateSetters, gridSetters) {
   
       // Undo box creation by deleting it
       if (boxAction['type'] === 'create') {
-        deleteShortcut(boxAction, gridSetters);
+        deleteBoxShortcut(boxAction, gridSetters);
       }
   
       // Undo box deletion by creating it
       if (boxAction['type'] === 'delete') {
-        const boxName = boxAction['boxName'];
-        const cellToDisplay = boxAction['displayCell'];
-  
-        // Restore box colour and display sum
-        gridSetters.setSpecifiedBoxColor(boxName, boxAction['color']);
-        gridSetters.setIsDisplayingBoxSum(cellToDisplay['col'], cellToDisplay['row'], true);
-        gridSetters.setBoxDeclaredSum(boxName, boxAction['declaredSum']);
-        gridSetters.applyBoxSum(boxName);
-  
-        // Reassign box to all its cells
-        for (const cell of boxAction['cells']) {
-          gridSetters.setCellBox(cell.col, cell.row, boxName);
-        }
+        createBoxShortcut(boxAction, gridSetters);
       }
   
       // Remove the last action from the undo list
@@ -65,27 +53,12 @@ function handleKillerUndo(grid, state, stateSetters, gridSetters) {
   
       // Redo box deletion by deleting it
       if (boxAction['type'] === 'delete') {
-        deleteShortcut(boxAction, gridSetters);
+        deleteBoxShortcut(boxAction, gridSetters);
       }
   
       // Redo box creation by creating it
       if (boxAction['type'] === 'create') {
-        const boxName = boxAction['boxName'];
-        const cellToDisplay = boxAction['displayCell'];
-  
-        // Restore box colour and display sum
-        console.log(cellToDisplay);
-        console.log("boxAction", boxAction)
-        console.log("boxdeclared", boxAction['declaredSum']);
-        gridSetters.setSpecifiedBoxColor(boxName, boxAction['color']);
-        gridSetters.setIsDisplayingBoxSum(cellToDisplay['col'], cellToDisplay['row'], true);
-        gridSetters.setBoxDeclaredSum(boxName, boxAction['declaredSum']);
-        gridSetters.applyBoxSum(boxName);
-  
-        // Reassign box to all its cells
-        for (const cell of boxAction['cells']) {
-          gridSetters.setCellBox(cell.col, cell.row, boxName);
-        }
+        createBoxShortcut(boxAction, gridSetters);
       }
   
       // Remove the last action from the redo list
