@@ -22,7 +22,7 @@ export interface Cell {
   isDisplayingBoxSum: boolean; // Determines if the box sum should be displayed
   isFixed: boolean;            // Indicates if the cell is fixed (cannot be modified) (backend use only)
   unfilledBoxCells: number;    // Number of cells in the box that are not filled (backend use only)
-  boxCells: { col: number; row: number }[]; // Array of cells in the box (backend use only)
+  boxCells: { col: number; row: number, cube: number, value: number }[]; // Array of cells in the box (backend use only)
 }
 
 // Helper function to initialise a single cell
